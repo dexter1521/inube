@@ -8,7 +8,7 @@ class UsuariosModel extends Model
 {
     protected $table      = 'usuarios';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['nombre', 'email', 'activo', 'is_admin'];
+    protected $allowedFields = ['nombre', 'email', 'activo', 'is_admin', 'password', 'perfil'];
     protected $validationRules = [
         'nombre' => 'required|min_length[3]',
         'email'  => 'required|valid_email',
@@ -16,4 +16,5 @@ class UsuariosModel extends Model
         'is_admin' => 'in_list[0,1]',
 
     ];
+    protected $returnType = 'array';
 }
