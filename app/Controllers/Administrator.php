@@ -14,7 +14,10 @@ class Administrator extends MyAdministrator
 
     public function create_product()
     {
-        return $this->renderTemplate('productos/create');
+        $data = [
+            'title' => 'Crear Producto'
+        ];
+        return $this->renderTemplate('productos/create', $data);
     }
 
     public function edit($id)

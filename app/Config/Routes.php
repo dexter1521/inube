@@ -7,12 +7,9 @@ use CodeIgniter\Router\RouteCollection;
  */
 //$routes->get('/', 'Home::index');
 
-/* Usar resource es un recurso RESTful  */
-$routes->resource('clientes', ['controller' => 'Clientes']);
-
-$routes->resource('Usuarios', ['controller' => 'Usuarios']);
-
-
+// Aquí puedes definir tus rutas para el módulo de administración
+// Puedes usar el método group para agrupar rutas relacionadas
+// y aplicar un prefijo común a todas ellas
 $routes->group('administrator', function ($routes) {
     $routes->get('list-products', 'Administrator::list_products');
     $routes->get('create-product', 'Administrator::create_product');
@@ -22,4 +19,16 @@ $routes->group('administrator', function ($routes) {
     $routes->post('save-product', 'Administrator::save_product');
     $routes->put('update-product/(:num)', 'Administrator::update_product/$1');
     $routes->delete('delete-product/(:num)', 'Administrator::delete_product/$1');
+});
+
+
+/** 
+ * Usar resource es un recurso RESTful
+ * 
+ * */
+//$routes->resource('clientes', ['controller' => 'Clientes']);
+//$routes->resource('Usuarios', ['controller' => 'Usuarios']);
+// API
+$routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) {
+    $routes->resource('usuarios'); // Esta línea expone todos los endpoints REST automáticamente
 });
