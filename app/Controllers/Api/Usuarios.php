@@ -18,13 +18,13 @@ class Usuarios extends BaseApiController
         if (!$id) {
             return $this->failValidationErrors('ID requerido');
         }
-    
+
         $usuario = $this->model->find($id);
-    
+
         if (!$usuario) {
             return $this->failNotFound("Usuario con ID $id no encontrado.");
         }
-    
+
         return $this->successResponse('Usuario encontrado.', $usuario);
     }
 
@@ -38,17 +38,17 @@ class Usuarios extends BaseApiController
         if (json_last_error() !== JSON_ERROR_NONE) {
             return $this->invalidJsonResponse();
         }
-    
+
         if (!$data) {
             return $this->emptyJsonResponse();
         }
-    
+
         if (!$this->model->insert($data)) {
             return $this->errorResponse('Error al crear el usuario', $this->model->errors(), 422);
         }
-    
+
         $data['id'] = $this->model->getInsertID();
-    
+
         return $this->successResponse('Usuario creado correctamente.', $data, 201);
     }
 
@@ -99,17 +99,40 @@ class Usuarios extends BaseApiController
         if (!$id) {
             return $this->failValidationErrors('ID requerido');
         }
-    
+
         $usuario = $this->model->find($id);
-    
+
         if (!$usuario) {
             return $this->failNotFound("Usuario con ID $id no encontrado.");
         }
-    
-        if (!$this->model->delete($id)) {
-            return $this->errorResponse('Error al eliminar el usuario.');
+
+        $data = ['activo' => 0];
+
+        if (!$this->model->update($id, $data)) {
+            return $this->errorResponse('No se pudo desactivar el usuario.');
         }
-    
-        return $this->successResponse("Usuario con ID $id eliminado correctamente.");
+
+        return $this->successResponse("Usuario con ID $id desactivado correctamente.");
+    }
+
+    public function activate($id = null)
+    {
+        if (!$id) {
+            return $this->failValidationErrors('ID requerido');
+        }
+
+        $usuario = $this->model->find($id);
+
+        if (!$usuario) {
+            return $this->failNotFound("Usuario con ID $id no encontrado.");
+        }
+
+        $data = ['activo' => 1];
+
+        if (!$this->model->update($id, $data)) {
+            return $this->errorResponse('No se pudo activar el usuario.');
+        }
+
+        return $this->successResponse("Usuario con ID $id activado correctamente.");
     }
 }
