@@ -28,8 +28,9 @@ class ModifyUsuariosTable extends Migration
 
         $this->forge->addColumn('usuarios', [
             'is_admin' => [
-                'type' => 'INT',
-                'null' => true, // Permitir valores nulos
+                'type' => 'TINYINT',
+                'null' => false, // Permitir valores nulos
+                'default' => 0, // Valor predeterminado
             ],
         ]);
 

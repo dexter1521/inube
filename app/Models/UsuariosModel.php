@@ -11,7 +11,7 @@ class UsuariosModel extends Model
     protected $allowedFields = ['nombre', 'email', 'activo', 'is_admin', 'password', 'perfil'];
     protected $validationRules = [
         'nombre' => 'required|min_length[3]',
-        'email'  => 'required|valid_email',
+        'email'  => 'required|valid_email|is_unique[usuarios.email]',
         'activo' => 'in_list[0,1]',
         'is_admin' => 'in_list[0,1]',
 

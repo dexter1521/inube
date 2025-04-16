@@ -209,7 +209,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-4">
+					<!-- <div class="col-md-4">
 						<div class="card">
 							<div class="card-header bg-info text-white">
 								Claves
@@ -221,7 +221,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 
 				<div class="row">
@@ -231,6 +231,7 @@
 						</button>
 					</div>
 				</div>
+
 			</form>
 		</div>
 
@@ -380,7 +381,7 @@
 		return ((precio - costo) / costo) * 100;
 	}
 
-	function validarNumerosDecimales(input) {
+	/* function validarNumerosDecimales(input) {
 		input.value = input.value.replace(/[^0-9.]/g, '');
-	}
+	} */
 </script>

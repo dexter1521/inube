@@ -29,6 +29,10 @@ $routes->group('administrator', function ($routes) {
 // API
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) {
     $routes->resource('usuarios'); // Esta línea expone todos los endpoints REST automáticamente
+    $routes->put('usuarios/activar/(:num)', 'Api\Usuarios::activate/$1');
 });
 
-$routes->put('api/usuarios/activar/(:num)', 'Api\Usuarios::activate/$1');
+$routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) {
+    $routes->resource('productos'); // Esta línea expone todos los endpoints REST automáticamente
+    $routes->put('productos/activar/(:num)', 'Api\Productos::activate/$1');
+});
