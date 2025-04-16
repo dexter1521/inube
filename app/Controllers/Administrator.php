@@ -4,6 +4,15 @@ namespace App\Controllers;
 
 class Administrator extends MyAdministrator
 {
+    public function index()
+    {
+        $data = [
+            'title' => 'Administración',
+            'subtitle' => 'Bienvenido al panel de administración'
+        ];
+        return $this->renderTemplate('view_dashboard', $data);
+    }
+
     public function list_products()
     {
         $data = [
@@ -27,5 +36,13 @@ class Administrator extends MyAdministrator
             // otros datos específicos para la vista de edición
         ];
         return $this->renderTemplate('productos/edit', $data);
+    }
+
+    public function list_users()
+    {
+        $data = [
+            'title' => 'Usuarios'
+        ];
+        return $this->renderTemplate('usuarios/index', $data);
     }
 }

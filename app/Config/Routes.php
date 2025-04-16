@@ -15,10 +15,8 @@ $routes->group('administrator', function ($routes) {
     $routes->get('create-product', 'Administrator::create_product');
     $routes->get('edit-product/(:num)', 'Administrator::edit/$1');
     
-    // Para métodos POST/PUT/DELETE
-    $routes->post('save-product', 'Administrator::save_product');
-    $routes->put('update-product/(:num)', 'Administrator::update_product/$1');
-    $routes->delete('delete-product/(:num)', 'Administrator::delete_product/$1');
+    $routes->get('list-users', 'Administrator::list_users');
+    $routes->get('panel', 'Administrator::index');
 });
 
 
@@ -32,3 +30,5 @@ $routes->group('administrator', function ($routes) {
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) {
     $routes->resource('usuarios'); // Esta línea expone todos los endpoints REST automáticamente
 });
+
+$routes->put('api/usuarios/activar/(:num)', 'Api\Usuarios::activate/$1');

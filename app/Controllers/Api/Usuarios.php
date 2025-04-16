@@ -61,7 +61,7 @@ class Usuarios extends BaseApiController
         if (json_last_error() !== JSON_ERROR_NONE) {
             return $this->respond([
                 'status' => false,
-                'message' => 'JSON no válido: ' . json_last_error_msg()
+                'messages' => 'JSON no válido: ' . json_last_error_msg()
             ], 400);
         }
 
@@ -72,14 +72,14 @@ class Usuarios extends BaseApiController
         if (!$data) {
             return $this->respond([
                 'status' => false,
-                'message' => 'Datos JSON inválidos o vacíos'
+                'messages' => 'Datos JSON inválidos o vacíos'
             ], 400);
         }
 
         if (!$this->model->update($id, $data)) {
             return $this->respond([
                 'status' => false,
-                'message' => 'Error de validación',
+                'messages' => 'Error de validación',
                 'errors' => $this->model->errors()
             ], 422);
         }
@@ -88,7 +88,7 @@ class Usuarios extends BaseApiController
 
         return $this->respond([
             'status' => true,
-            'message' => 'Usuario actualizado correctamente.',
+            'messages' => 'Usuario actualizado correctamente.',
             'data' => $data
         ], 200);
     }

@@ -10,7 +10,7 @@ class BaseApiController extends ResourceController
     {
         return $this->respond([
             'status'  => true,
-            'message' => $message,
+            'messages' => $message,
             'data'    => $data
         ], $code);
     }
@@ -19,7 +19,7 @@ class BaseApiController extends ResourceController
     {
         return $this->respond([
             'status'  => false,
-            'message' => $message,
+            'messages' => $message,
             'errors'  => $errors
         ], $code);
     }
