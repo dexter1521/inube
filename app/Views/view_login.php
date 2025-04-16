@@ -6,13 +6,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Vendors Min CSS -->
-    <link rel="stylesheet" href="assets/css/vendors.min.css">
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/vendors.min.css') ?>">
     <!-- Style CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/style.css') ?>">
     <!-- Responsive CSS -->
-    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/responsive.css') ?>">
     <title>Distribuciones Zúñiga v2</title>
-    <link rel="icon" type="image/png" href="assets/img/favicon.png">
+    <link rel="icon" type="image/png" href="<?php echo base_url('assets/img/favicon.png') ?>">
 </head>
 <script>
 	const BASE_URL = '<?php echo base_url(); ?>';
@@ -29,7 +29,7 @@
             <div class="d-table-cell">
                 <div class="login-form">
                     <div class="logo">
-                        <img src="assets/img/logo.jpg" alt="image">
+                        <img src="<?php echo base_url('assets/img/logo.jpg') ?>" alt="image">
                     </div>
 
                     <h2>Bienvenido</h2>
@@ -65,9 +65,8 @@
     </div>
     <!-- End Login Area -->
     <!-- Vendors Min JS -->
-    <script src="assets/js/vendors.min.js"></script>
+    <script src="<?php echo base_url('assets/js/vendors.min.js') ?>"></script>
     <!-- Custom JS -->
-    <!-- <script src="assets\js\custom.js"></script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://lib.morelos.gob.mx/fontawesome/css/all5.7.2.css" crossorigin="anonymous">
     <script type="text/javascript">
