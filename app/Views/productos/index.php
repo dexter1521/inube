@@ -15,14 +15,11 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Nombre</th>
+                                <th>Articulo</th>
                                 <th>Descripcion</th>
-                                <th>Precio</th>
-                                <th>Stock</th>
-                                <th>Imagen</th>
-                                <th>Activo</th>
                                 <th>Categoria</th>
-                                
+                                <th>Precio</th>
+                                <th>Activo</th>                               
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -36,3 +33,42 @@
     </div>
 </div>
 <!-- End -->
+
+<script>
+    $(document).ready(function() {
+        $('#tablaDatos').DataTable({
+            "ajax": {
+                "url": API_URL  + "productos",
+                "type": "GET",
+                "dataSrc": function(json) {
+                    // Map the backend response to match the DataTable columns
+                    return json.map(function(item) {
+                        return {
+                            id: item.ID,
+                            nombre: item.clave,
+                            descripcion: item.descripcion,
+                            precio: item.precio,
+                            activo: item.bloqueado ? 'No' : 'Sí',
+                            categoria: item.linea
+                        };
+                    });
+                }
+            },
+            "columns": [
+                { "data": "id" },
+                { "data": "nombre" },
+                { "data": "descripcion" },
+                { "data": "categoria" },
+                { "data": "precio" },
+                { "data": "activo" },
+                { 
+                    data: null,
+                    render: function(data, type, row) {
+                        return '<button class="btn btn-primary btn-sm btn-editar" data-id="' + row.id + '">Editar</button>' +
+                               '<button class="btn btn-danger btn-sm btn-eliminar" data-id="' + row.id + '">Eliminar</button>';
+                    }
+                }
+            ]
+        });
+    });
+</script>

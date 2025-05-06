@@ -20,8 +20,8 @@ class CreaTablaProductos extends Migration
             'fabricante' => ['type' => 'VARCHAR', 'constraint' => 255, 'default' => 'SYS'],
             'ubicacion' => ['type' => 'VARCHAR', 'constraint' => 255, 'default' => 'SYS'],
             'unidad' => ['type' => 'VARCHAR', 'constraint' => 255],
-            'bloqueado' => ['type' => 'INT'],
-            'existencia' => ['type' => 'DECIMAL', 'constraint' => '10,2'],
+            'bloqueado' => ['type' => 'INT', 'default' => '0'],
+            'existencia' => ['type' => 'DECIMAL', 'constraint' => '10,2', 'default' => '0.00'],
             'precio2' => ['type' => 'DECIMAL', 'constraint' => '10,2', 'default' => '0.00'],
             'precio3' => ['type' => 'DECIMAL', 'constraint' => '10,2', 'default' => '0.00'],
             'precio4' => ['type' => 'DECIMAL', 'constraint' => '10,2', 'default' => '0.00'],
@@ -41,8 +41,8 @@ class CreaTablaProductos extends Migration
             'u8' => ['type' => 'DECIMAL', 'constraint' => '10,2', 'default' => '0.00'],
             'u9' => ['type' => 'DECIMAL', 'constraint' => '10,2', 'default' => '0.00'],
             'u10' => ['type' => 'DECIMAL', 'constraint' => '10,2', 'default' => '0.00'],
-            'claveprodserv' => ['type' => 'VARCHAR', 'constraint' => 255],
-            'claveunidad' => ['type' => 'VARCHAR', 'constraint' => 255],
+            'claveprodserv' => ['type' => 'VARCHAR', 'constraint' => 10, 'default' => '01010101'],
+            'claveunidad' => ['type' => 'VARCHAR', 'constraint' => 10, 'default' => 'H87']
         ]);
         $this->forge->addKey('ID', true); // Clave primaria y autoincrementable
         $this->forge->createTable('productos');

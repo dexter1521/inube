@@ -36,23 +36,30 @@ class Productos extends BaseApiController
         return $this->successResponse('Producto creado correctamente.', $data, 201);
     }
 
-    public function show($id = null)
+    public function show($identifier = null)
     {
-        if (!$id) {
-            return $this->failValidationErrors('ID requerido');
+        if (!$identifier) {
+            return $this->failValidationErrors('Identificador requerido (ID o clave)');
         }
 
-        $usuario = $this->model->find($id);
+        // Buscar por ID o por clave
+        $producto = is_numeric($identifier)
+            ? $this->model->find($identifier)
+            : $this->model->where('clave', $identifier)->first();
 
-        if (!$usuario) {
-            return $this->failNotFound("Producto con clave $id no encontrado.");
+        if (!$producto) {
+            return $this->failNotFound("Producto no encontrado.");
         }
 
-        return $this->successResponse('Producto encontrado.', $usuario);
+        return $this->successResponse('Producto encontrado.', $producto);
     }
 
-    public function update($id = null)
+    public function update($identifier = null)
     {
+        if (!$identifier) {
+            return $this->failValidationErrors('Identificador requerido (ID o clave)');
+        }
+
         $json = file_get_contents('php://input');
         $data = json_decode($json, true);
 
@@ -64,24 +71,31 @@ class Productos extends BaseApiController
             return $this->failValidationErrors('Datos inválidos o vacíos.');
         }
 
-        if (!is_numeric($id)) {
-            return $this->failValidationErrors('ID inválido');
+        // Buscar el producto por ID o clave
+        $producto = is_numeric($identifier)
+            ? $this->model->find($identifier)
+            : $this->model->where('clave', $identifier)->first();
+
+        if (!$producto) {
+            return $this->failNotFound("Producto no encontrado.");
         }
 
-        if (!$data) {
-            return $this->emptyJsonResponse();
+        // Si la clave no está en los datos o es la misma que la actual, remover validación única
+        if (!isset($data['clave']) || $data['clave'] === $producto['clave']) {
+            $this->model->setValidationRule('clave', 'required|max_length[50]');
+        } else {
+            // Si se está cambiando la clave, validar que sea única
+            $this->model->setValidationRule(
+                'clave',
+                "required|max_length[50]|is_unique[productos.clave,ID,{$producto['ID']}]"
+            );
         }
 
-        $this->model->setValidationRules([
-            'clave' => "required|max_length[50]|is_unique[productos.clave,ID,{$id}]",
-        ]);
-
-        if (!$this->model->update($id, $data)) {
-            return $this->errorResponse('Error al actualizar el producto', $this->model->errors(), 422);
+        // Actualizar usando siempre el ID
+        if (!$this->model->update($producto['ID'], $data)) {
+            return $this->failValidationErrors($this->model->errors());
         }
 
-        $data['id'] = (int) $id;
-
-        return $this->successResponse('Producto actualizado correctamente.', $data, 201);
+        return $this->successResponse('Producto actualizado correctamente.', $data, 200);
     }
 }
