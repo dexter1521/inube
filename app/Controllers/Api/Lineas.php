@@ -41,6 +41,14 @@ class Lineas extends BaseApiController
             return $this->fail('Datos vacíos', 400);
         }
 
+        // Agregar usufecha y usuhora si no vienen
+        if (!isset($data['usufecha'])) {
+            $data['usufecha'] = time();
+        }
+        if (!isset($data['usuhora'])) {
+            $data['usuhora'] = date('H:i:s');
+        }
+
         if (!$this->model->insert($data)) {
             return $this->fail($this->model->errors(), 422);
         }
