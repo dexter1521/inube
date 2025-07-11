@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class LineasModel extends Model
 {
     protected $table      = 'lineas';
-    protected $primaryKey = 'linea';
+    protected $primaryKey = 'id';
 
     protected $allowedFields = [
         'linea',

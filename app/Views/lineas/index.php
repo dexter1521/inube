@@ -53,8 +53,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="linea-descrip">Descripción</label>
-                        <input type="text" class="form-control" id="linea_descrip" name="linea_descrip" onkeyup="mayusculas(this);">
+                        <label for="descripcion">Descripción</label>
+                        <input type="text" class="form-control" id="descripcion" name="descripcion" onkeyup="mayusculas(this);">
                     </div>
 
 
@@ -97,7 +97,7 @@
                     "data": "linea"
                 },
                 {
-                    "data": "descrip"
+                    "data": "descripcion"
                 },
                 {
                     "data": null,
@@ -108,8 +108,8 @@
                                     Acciones
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item btn-edit" href="#" >Editar</a>
-                                    <a class="dropdown-item" href="#" >Eliminar</a>
+                                    <a class="dropdown-item btn-edit" href="#">Editar</a>
+                                    <a class="dropdown-item btn-delete" href="#">Eliminar</a>
                                 </div>
                             </div>
                         `;
@@ -120,102 +120,80 @@
 
         $('#tablaDatos').on('click', '.btn-edit', function() {
             var data = tablaDatos.row($(this).parents('tr')).data();
-            console.log('Editar:', data.linea);
-
             $('#myModal .modal-title').text('Actualizar Línea');
             $('#myModal').modal('show');
-            $.ajax({
-                url: API_URL + 'linea/seleccionar?linea=' + data.linea,
-                method: 'GET',
-                success: function(response) {
-                    console.log(response);
-                    if (response.status === 200) {
-
-                        $('#linea').val(response.response.Linea);
-                        $('#linea').prop('readonly', true);
-                        $('#linea_descrip').val(response.response.Descrip);
-                        $("#preview1").attr("src", response.response.url);
-                        $("#preview1").css("display", "block");
-
-                        isUpdating = true; // Cambiar el estado a actualización
-                    } else {
-                        console.error('Error en respuesta: ' + response.message);
-                    }
-                },
-                error: function(xhr, textStatus, errorThrown) {
-                    var errorMessage = JSON.stringify(xhr.responseJSON);
-                    $('#loader').hide();
-                    handleAjaxError(xhr)
-                }
-            });
+            $('#linea').val(data.linea).prop('readonly', true);
+            $('#linea_descrip').val(data.descripcion);
+            isUpdating = data.id;
         });
 
-        $('#btnGuardar').click(function() {
-
-            var formData = new FormData($('#frmLineas')[0]);
-
-            if (isUpdating === true) {
-
+        // Eliminar línea
+        $('#tablaDatos').on('click', '.btn-delete', function() {
+            var data = tablaDatos.row($(this).parents('tr')).data();
+            if (confirm('¿Seguro que deseas eliminar la línea "' + data.linea + '"?')) {
                 $.ajax({
-                    url: API_URL + 'linea/actualizar',
-                    method: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    dataType: "JSON",
+                    url: BASE_URL + 'api/lineas/' + data.id,
+                    type: 'DELETE',
                     success: function(response) {
-                        console.log(response);
-
-                        if (response.status == 200 && response.success === false) {
-                            handleValidationErrors(response.messages)
-
-                        } else if (response.status == 200 && response.success === true) {
-
-                            myMessages('success', 'Datos actuliazados!', response.messages)
-
-                            $('#myModal').modal('hide'); // Cierra el modal al recibir una respuesta exitosa
-                            $('#tablaDatos').DataTable().ajax.reload();
-                            isUpdating = false; // Reiniciar el estado a registro
-                            $('#frmLineas')[0].reset();
-
-                        }
-
+                        $('#tablaDatos').DataTable().ajax.reload();
                     },
-                    error: function(xhr, textStatus, errorThrown) {
-                        $('#loader').hide();
-                        handleAjaxError(xhr)
-                    }
-                });
-
-            } else {
-                $.ajax({
-                    url: API_URL + 'linea/registrar',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    dataType: "JSON",
-                    success: function(response) {
-                        console.log(response);
-                        $('#loader').hide();
-                        if (response.status == 200 && response.success === false) {
-                            handleValidationErrors(response.messages)
-
-                        } else if (response.success === true && response.status == 200) {
-                            handleSuccess('¡Registro exitoso!', response.messages)
-                            $('#tablaDatos').DataTable().ajax.reload();
-                            $('#frmLineas')[0].reset();
-                            $('#myModal').modal('hide');
-                        }
-                    },
-                    error: function(xhr, textStatus, errorThrown) {
-                        $('#loader').hide();
-                        handleAjaxError(xhr)
+                    error: function(xhr) {
+                        alert('Error al eliminar');
                     }
                 });
             }
+        });
 
+        $('#btnGuardar').click(function() {
+            var linea = $('#linea').val();
+            var descripcion = $('#descripcion').val();
+            var usufecha = Math.floor(Date.now() / 1000);
+            var data = {
+                linea: linea,
+                descripcion: descripcion,
+                usufecha: usufecha
+            };
 
+            if (isUpdating) {
+                // Actualizar
+                $.ajax({
+                    url: BASE_URL + 'api/lineas/' + isUpdating,
+                    type: 'PUT',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        $('#myModal').modal('hide');
+                        $('#tablaDatos').DataTable().ajax.reload();
+                        isUpdating = false;
+                        $('#frmLineas')[0].reset();
+                    },
+                    error: function(xhr) {
+                        alert('Error al actualizar');
+                    }
+                });
+            } else {
+                // Crear
+                $.ajax({
+                    url: BASE_URL + 'api/lineas',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        $('#tablaDatos').DataTable().ajax.reload();
+                        $('#frmLineas')[0].reset();
+                        $('#myModal').modal('hide');
+                    },
+                    error: function(xhr) {
+                        let msg = 'Error al crear';
+                        if (xhr.responseJSON && xhr.responseJSON.messages) {
+                            msg += ': ' + JSON.stringify(xhr.responseJSON.messages);
+                        } else if (xhr.responseText) {
+                            msg += ': ' + xhr.responseText;
+                        }
+                        alert(msg);
+                    }
+                });
+            }
         });
 
         $('.btn-cerrar').click(function() {
@@ -228,7 +206,6 @@
             $('#myModal .modal-title').text('Nueva Línea');
             $('#linea').prop('readonly', false);
             isUpdating = false;
-            $('#preview1').attr('src', '');
         });
     });
 </script>
