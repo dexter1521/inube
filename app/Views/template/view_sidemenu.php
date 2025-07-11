@@ -55,14 +55,14 @@
 				<ul class="sidemenu-nav-second-level">
 
 					<li class="nav-item">
-						<a href="<?php echo base_url('administrator/list-lineas'); ?>" class="nav-link">
+						<a href="<?php echo base_url('administrator/list-category'); ?>" class="nav-link">
 							<span class="icon"><i class='bx bx-badge-check'></i></span>
 							<span class="menu-title">Lineas</span>
 						</a>
 					</li>
 
 					<li class="nav-item">
-						<a href="<?php echo base_url('administrator/list-marcas'); ?>" class="nav-link">
+						<a href="<?php echo base_url('administrator/list-brands'); ?>" class="nav-link">
 							<span class="icon"><i class='bx bx-badge-check'></i></span>
 							<span class="menu-title">Marcas</span>
 						</a>

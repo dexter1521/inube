@@ -14,8 +14,16 @@ $routes->group('administrator', function ($routes) {
     $routes->get('list-products', 'Administrator::list_products');
     $routes->get('create-product', 'Administrator::create_product');
     $routes->get('edit-product/(:num)', 'Administrator::edit/$1');
-    
+
     $routes->get('list-users', 'Administrator::list_users');
+
+
+    $routes->get('list-category', 'Administrator::list_category');
+    $routes->get('list-brands', 'Administrator::list_brands');
+
+
+
+
     $routes->get('panel', 'Administrator::index');
 });
 
@@ -24,9 +32,7 @@ $routes->group('administrator', function ($routes) {
  * Usar resource es un recurso RESTful
  * 
  * */
-//$routes->resource('clientes', ['controller' => 'Clientes']);
-//$routes->resource('Usuarios', ['controller' => 'Usuarios']);
-// API
+
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) {
     $routes->resource('usuarios'); // Esta línea expone todos los endpoints REST automáticamente
     $routes->put('usuarios/activar/(:num)', 'Api\Usuarios::activate/$1');

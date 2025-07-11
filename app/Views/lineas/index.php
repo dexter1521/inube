@@ -89,7 +89,7 @@
 
         var tablaDatos = $('#tablaDatos').DataTable({
             "ajax": {
-                "url": API_URL + 'linea/lineas',
+                "url": BASE_URL + 'api/lineas',
                 "type": "GET",
                 "dataSrc": ""
             },

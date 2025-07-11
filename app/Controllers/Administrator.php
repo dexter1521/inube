@@ -45,4 +45,20 @@ class Administrator extends MyAdministrator
         ];
         return $this->renderTemplate('usuarios/index', $data);
     }
+
+    public function list_category()
+    {
+        $data = [
+            'title' => 'Líneas'
+        ];
+        return $this->renderTemplate('lineas/index', $data);
+    }
+
+    public function list_brands()
+    {
+        $data = [
+            'title' => 'Marcas'
+        ];
+        return $this->renderTemplate('marcas/index', $data);
+    }
 }

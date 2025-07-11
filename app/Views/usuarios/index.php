@@ -195,7 +195,7 @@
 
     function cargarUsuarios() {
         $.ajax({
-            url: 'http://localhost:8080/api/usuarios',
+            url: BASE_URL + 'api/usuarios',
             type: 'GET',
             success: function(response) {
                 let rows = '';
