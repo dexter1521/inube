@@ -73,7 +73,7 @@
 
         var tablaDatos = $('#tablaDatos').DataTable({
             "ajax": {
-                "url": API_URL + 'Marca/lista',
+                "url": BASE_URL + 'api/marcas',
                 "type": "GET",
                 "dataSrc": ""
             },
@@ -81,7 +81,7 @@
                     "data": "marca"
                 },
                 {
-                    "data": "descrip"
+                    "data": "descripcion"
                 },
                 {
                     "data": null,
@@ -92,8 +92,8 @@
                                     Acciones
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item btn-edit" href="#" >Editar</a>
-                                    <a class="dropdown-item" href="#" >Eliminar</a>
+                                    <a class="dropdown-item btn-edit" href="#">Editar</a>
+                                    <a class="dropdown-item btn-delete" href="#">Eliminar</a>
                                 </div>
                             </div>
                         `;
@@ -104,95 +104,78 @@
 
         $('#tablaDatos').on('click', '.btn-edit', function() {
             var data = tablaDatos.row($(this).parents('tr')).data();
-            console.log('Editar:', data.marca);
-
             $('#myModal .modal-title').text('Actualizar Marca');
             $('#myModal').modal('show');
-            $.ajax({
-                url: API_URL + 'marca/seleccionar?marca=' + data.marca,
-                method: 'GET',
-                success: function(response) {
-                    console.log(response);
-                    if (response.status === 200) {
+            $('#marca').val(data.marca).prop('readonly', true);
+            $('#marca_descrip').val(data.descripcion);
+            isUpdating = data.marca;
+        });
 
-                        $('#marca').val(response.response.Marca);
-                        $('#marca').prop('readonly', true);
-                        $('#marca_descrip').val(response.response.Descrip);
-
-                        isUpdating = true; // Cambiar el estado a actualización
-                    } else {
-                        console.error('Error en respuesta: ' + response.message);
+        // Eliminar marca
+        $('#tablaDatos').on('click', '.btn-delete', function() {
+            var data = tablaDatos.row($(this).parents('tr')).data();
+            if (confirm('¿Seguro que deseas eliminar la marca "' + data.marca + '"?')) {
+                $.ajax({
+                    url: BASE_URL + 'api/marcas/' + data.marca,
+                    type: 'DELETE',
+                    success: function(response) {
+                        $('#tablaDatos').DataTable().ajax.reload();
+                    },
+                    error: function(xhr) {
+                        alert('Error al eliminar');
                     }
-                },
-                error: function(xhr, textStatus, errorThrown) {
-                    var errorMessage = JSON.stringify(xhr.responseJSON);
-                    $('#loader').hide();
-                    handleAjaxError(xhr)
-                }
-            });
+                });
+            }
         });
 
         $('#btnGuardar').click(function() {
+            var marca = $('#marca').val();
+            var descripcion = $('#marca_descrip').val();
+            var data = {
+                marca: marca,
+                descripcion: descripcion
+            };
 
-            var formData = $('#frmMarcas').serialize();
-
-            if (isUpdating === true) {
-
+            if (isUpdating) {
+                // Actualizar
                 $.ajax({
-                    url: API_URL + 'marca/actualizar',
-                    method: 'POST',
-                    data: formData,
+                    url: BASE_URL + 'api/marcas/' + isUpdating,
+                    type: 'PUT',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
                     success: function(response) {
-                        console.log(response);
-
-                        if (response.status == 200 && response.success === false) {
-                            handleValidationErrors(response.messages)
-
-                        } else if (response.status == 200 && response.success === true) {
-
-                            myMessages('success', 'Datos actualizados!', response.messages)
-
-                            $('#myModal').modal('hide');
-                            $('#tablaDatos').DataTable().ajax.reload();
-                            isUpdating = false;
-
-                        }
-
+                        $('#myModal').modal('hide');
+                        $('#tablaDatos').DataTable().ajax.reload();
+                        isUpdating = false;
+                        $('#frmMarcas')[0].reset();
                     },
-                    error: function(xhr, textStatus, errorThrown) {
-                        $('#loader').hide();
-                        handleAjaxError(xhr)
+                    error: function(xhr) {
+                        alert('Error al actualizar');
                     }
                 });
-
             } else {
-
+                // Crear
                 $.ajax({
-                    url: API_URL + 'marca/registrar',
+                    url: BASE_URL + 'api/marcas',
                     type: 'POST',
-                    data: formData,
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
                     success: function(response) {
-                        console.log(response);
-                        $('#loader').hide();
-                        if (response.status == 200 && response.success === false) {
-                            handleValidationErrors(response.messages)
-
-                        } else if (response.success === true && response.status == 200) {
-                            handleSuccess('¡Registro exitoso!', response.messages)
-                            $('#tablaDatos').DataTable().ajax.reload();
-                            $('#frmMarcas')[0].reset();
-                            $('#myModal').modal('hide');
-                        }
+                        $('#tablaDatos').DataTable().ajax.reload();
+                        $('#frmMarcas')[0].reset();
+                        $('#myModal').modal('hide');
                     },
-                    error: function(xhr, textStatus, errorThrown) {
-                        $('#loader').hide();
-                        handleAjaxError(xhr)
+                    error: function(xhr) {
+                        let msg = 'Error al crear';
+                        if (xhr.responseJSON && xhr.responseJSON.messages) {
+                            msg += ': ' + JSON.stringify(xhr.responseJSON.messages);
+                        } else if (xhr.responseText) {
+                            msg += ': ' + xhr.responseText;
+                        }
+                        alert(msg);
                     }
                 });
-
             }
-
-
         });
 
         $('.btn-cerrar').click(function() {

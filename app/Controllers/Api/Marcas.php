@@ -22,75 +22,72 @@ class Marcas extends BaseApiController
         $marca = $this->model->find($id);
 
         if (!$marca) {
-            return $this->failNotFound("marca con ID $id no encontrado.");
+            return $this->failNotFound("Marca con ID $id no encontrada.");
         }
 
-        return $this->successResponse('marca encontrado.', $marca);
+        return $this->respond($marca);
     }
 
     public function create()
     {
-        //sigo sin entender xq esto no funciona tal vez sea la version de php
-        //$input = $this->request->getPost();
         $json = file_get_contents('php://input');
         $data = json_decode($json, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            return $this->invalidJsonResponse();
+            return $this->fail('JSON no válido: ' . json_last_error_msg(), 400);
         }
 
         if (!$data) {
-            return $this->emptyJsonResponse();
+            return $this->fail('Datos vacíos', 400);
+        }
+
+        // Agregar usufecha y usuhora si no vienen
+        if (!isset($data['usufecha'])) {
+            $data['usufecha'] = time();
+        }
+        if (!isset($data['usuhora'])) {
+            $data['usuhora'] = date('H:i:s');
         }
 
         if (!$this->model->insert($data)) {
-            return $this->errorResponse('Error al crear el marca', $this->model->errors(), 422);
+            return $this->fail($this->model->errors(), 422);
         }
 
         $data['id'] = $this->model->getInsertID();
 
-        return $this->successResponse('marca creado correctamente.', $data, 201);
+        return $this->respondCreated($data);
     }
 
     public function update($id = null)
     {
-        //print_r($_REQUEST()); exit();
         $json = file_get_contents('php://input');
         $data = json_decode($json, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            return $this->respond([
-                'status' => false,
-                'messages' => 'JSON no válido: ' . json_last_error_msg()
-            ], 400);
+            return $this->fail('JSON no válido: ' . json_last_error_msg(), 400);
         }
 
-        if (!is_numeric($id)) {
-            return $this->failValidationErrors('ID inválido');
-        }
+
 
         if (!$data) {
-            return $this->respond([
-                'status' => false,
-                'messages' => 'Datos JSON inválidos o vacíos'
-            ], 400);
+            return $this->fail('Datos vacíos', 400);
+        }
+
+        // Agregar usufecha y usuhora si no vienen
+        if (!isset($data['usufecha'])) {
+            $data['usufecha'] = time();
+        }
+        if (!isset($data['usuhora'])) {
+            $data['usuhora'] = date('H:i:s');
         }
 
         if (!$this->model->update($id, $data)) {
-            return $this->respond([
-                'status' => false,
-                'messages' => 'Error de validación',
-                'errors' => $this->model->errors()
-            ], 422);
+            return $this->fail($this->model->errors(), 422);
         }
 
-        $data['id'] = (int) $id;
+        $data['id'] = $id;
 
-        return $this->respond([
-            'status' => true,
-            'messages' => 'marca actualizado correctamente.',
-            'data' => $data
-        ], 200);
+        return $this->respond($data);
     }
 
 
@@ -103,36 +100,15 @@ class Marcas extends BaseApiController
         $marca = $this->model->find($id);
 
         if (!$marca) {
-            return $this->failNotFound("marca con ID $id no encontrado.");
+            return $this->failNotFound("Marca con ID $id no encontrada.");
         }
 
-        $data = ['activo' => 0];
-
-        if (!$this->model->update($id, $data)) {
-            return $this->errorResponse('No se pudo desactivar el marca.');
+        if (!$this->model->delete($id)) {
+            return $this->fail('No se pudo eliminar la marca.');
         }
 
-        return $this->successResponse("marca con ID $id desactivado correctamente.");
+        return $this->respondDeleted(["id" => $id]);
     }
 
-    public function activate($id = null)
-    {
-        if (!$id) {
-            return $this->failValidationErrors('ID requerido');
-        }
-
-        $marca = $this->model->find($id);
-
-        if (!$marca) {
-            return $this->failNotFound("marca con ID $id no encontrado.");
-        }
-
-        $data = ['activo' => 1];
-
-        if (!$this->model->update($id, $data)) {
-            return $this->errorResponse('No se pudo activar el marca.');
-        }
-
-        return $this->successResponse("marca con ID $id activado correctamente.");
-    }
+    // No se implementa activate porque la tabla no tiene campo 'activo'.
 }

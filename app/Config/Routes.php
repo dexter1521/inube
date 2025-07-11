@@ -14,16 +14,9 @@ $routes->group('administrator', function ($routes) {
     $routes->get('list-products', 'Administrator::list_products');
     $routes->get('create-product', 'Administrator::create_product');
     $routes->get('edit-product/(:num)', 'Administrator::edit/$1');
-
     $routes->get('list-users', 'Administrator::list_users');
-
-
     $routes->get('list-category', 'Administrator::list_category');
     $routes->get('list-brands', 'Administrator::list_brands');
-
-
-
-
     $routes->get('panel', 'Administrator::index');
 });
 
@@ -34,16 +27,10 @@ $routes->group('administrator', function ($routes) {
  * */
 
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes) {
-    $routes->resource('usuarios'); // Esta línea expone todos los endpoints REST automáticamente
+    $routes->resource('usuarios');
     $routes->put('usuarios/activar/(:num)', 'Api\Usuarios::activate/$1');
-});
-
-
-$routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes) {
-    $routes->resource('productos'); // Esta línea expone todos los endpoints REST automáticamente
+    $routes->resource('productos');
     $routes->put('productos/activar/(:num)', 'Api\Productos::activate/$1');
-});
-
-$routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes) {
-    $routes->resource('lineas'); // Endpoints REST para lineas
+    $routes->resource('lineas');
+    $routes->resource('marcas');
 });
