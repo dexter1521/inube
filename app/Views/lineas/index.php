@@ -123,7 +123,7 @@
             $('#myModal .modal-title').text('Actualizar Línea');
             $('#myModal').modal('show');
             $('#linea').val(data.linea).prop('readonly', true);
-            $('#linea_descrip').val(data.descripcion);
+            $('#descripcion').val(data.descripcion);
             isUpdating = data.id;
         });
 
