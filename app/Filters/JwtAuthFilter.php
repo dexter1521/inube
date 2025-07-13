@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filters;
 
 use CodeIgniter\HTTP\RequestInterface;
@@ -11,14 +12,24 @@ class JwtAuthFilter implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
-        $authHeader = $request->getHeaderLine('Authorization');
-        if (!$authHeader || !preg_match('/Bearer\s(.*)/', $authHeader, $matches)) {
-            return service('response')->setJSON([
-                'status' => 401,
-                'error' => 'Token no proporcionado'
-            ])->setStatusCode(401);
+        if ($request->getMethod() === 'options') {
+            return; // Permitir preflight
         }
-        $token = $matches[1];
+
+        // Intentar obtener el token del header Authorization
+        $authHeader = $request->getHeaderLine('Authorization');
+        if ($authHeader && preg_match('/Bearer\s(.*)/', $authHeader, $matches)) {
+            $token = $matches[1];
+        } else {
+            // Si no está en el header, buscar en la cookie 'token'
+            $token = $_COOKIE['token'] ?? null;
+            if (!$token) {
+                return service('response')->setJSON([
+                    'status' => 401,
+                    'error' => 'Token no proporcionado'
+                ])->setStatusCode(401);
+            }
+        }
 
         // Validar token estático en la tabla dispositivos
         $db = \Config\Database::connect();
@@ -28,11 +39,13 @@ class JwtAuthFilter implements FilterInterface
         $builder->groupStart()
             ->where('expiracion IS NULL')
             ->orWhere('expiracion >', date('Y-m-d H:i:s'))
-        ->groupEnd();
+            ->groupEnd();
+
         $dispositivo = $builder->get()->getRowArray();
         if ($dispositivo) {
-            // Token estático válido, permitir acceso
-            $request->dispositivo = $dispositivo;
+            // Token estático válido, permitir acceso global
+            $req = service('request');
+            $req->dispositivo = $dispositivo;
             return;
         }
 
@@ -40,7 +53,16 @@ class JwtAuthFilter implements FilterInterface
         $key = getenv('JWT_SECRET') ?: 'supersecretkey';
         try {
             $decoded = JWT::decode($token, new Key($key, 'HS256'));
-            $request->user = $decoded;
+            // Validar campos esperados en el JWT
+            if (!isset($decoded->uid) || !isset($decoded->email)) {
+                return service('response')->setJSON([
+                    'status' => 401,
+                    'error' => 'Token JWT inválido o incompleto'
+                ])->setStatusCode(401);
+            }
+            // Hacer user accesible globalmente
+            $req = service('request');
+            $req->user = $decoded;
         } catch (\Exception $e) {
             return service('response')->setJSON([
                 'status' => 401,

@@ -4,21 +4,21 @@
     <script>
         const BASE_URL = '<?php echo base_url(); ?>';
         const API_URL = $("#api_url").val();
-		const token = localStorage.getItem('token');
-		
+        const token = localStorage.getItem('token');
+
         $(document).ready(function() {
 
             //verificarToken();
             //getUSerDecode();
 
 
-           /*  $(".nav-item").click(function() {
-                // Remove the active class from all menu options
-                $(".nav-item").removeClass("mm-active");
+            /*  $(".nav-item").click(function() {
+                 // Remove the active class from all menu options
+                 $(".nav-item").removeClass("mm-active");
 
-                // Add the active class to the clicked menu option
-                $(this).addClass("mm-active");
-            }); */
+                 // Add the active class to the clicked menu option
+                 $(this).addClass("mm-active");
+             }); */
 
         });
 
@@ -66,7 +66,7 @@
             if (token && token !== 'undefined') {
                 var decodedToken = atob(token.split('.')[1]); // Decodificar el token JWT
                 var tokenData = JSON.parse(decodedToken);
-				//console.log(tokenData);
+                //console.log(tokenData);
                 // Obtener la fecha de expiración del token
                 var expiracion = tokenData.expiration * 1000; // Convertir a milisegundos
 
@@ -90,6 +90,4 @@
             }
 
         }
-
-        
     </script>

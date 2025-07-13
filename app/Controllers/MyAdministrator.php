@@ -2,15 +2,41 @@
 namespace App\Controllers;
 
 use CodeIgniter\Controller;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class MyAdministrator extends Controller
 {
-    protected $helpers = ['url', 'form']; // Helpers que se cargarán automáticamente
+    protected $user;
+    protected $helpers = ['url', 'form']; // helpers útiles para views
 
     public function initController(\CodeIgniter\HTTP\RequestInterface $request, \CodeIgniter\HTTP\ResponseInterface $response, \Psr\Log\LoggerInterface $logger)
     {
         parent::initController($request, $response, $logger);
-        // Inicializaciones comunes aquí
+
+        // Leer el token desde la cookie y loguear para depuración
+        $token = $_COOKIE['token'] ?? null;
+        error_log('TOKEN EN COOKIE: ' . ($token ?: 'NO HAY TOKEN'));
+
+        if (!$token) {
+            return redirect()->to('/login');
+        }
+
+        try {
+            $key = getenv('JWT_SECRET') ?: 'supersecretkey';
+            $decoded = JWT::decode($token, new Key($key, 'HS256'));
+
+            // Validar campos mínimos del JWT
+            if (!isset($decoded->uid) || !isset($decoded->email)) {
+                return redirect()->to('/login');
+            }
+
+            // Guardar usuario decodificado para uso en controladores y vistas
+            $this->user = $decoded;
+        } catch (\Exception $e) {
+            // Si falla la validación, redirige al login
+            return redirect()->to('/login');
+        }
     }
 
     protected function generarBreadcrumb(): array
@@ -29,15 +55,15 @@ class MyAdministrator extends Controller
 
     protected function renderTemplate(string $page, array $data = []): string
     {
-        // Verificar si la vista existe
+        // Validar que la vista exista
         if (!is_file(APPPATH . 'Views/' . $page . '.php')) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        // Datos comunes a todas las vistas
+        // Datos compartidos
         $data['breadcrumb'] = $this->generarBreadcrumb();
+        $data['user'] = $this->user;
 
-        // Construir la vista completa
         return view('template/view_header', $data)
             . view('template/view_sidemenu', $data)
             . view('template/view_navbar', $data)

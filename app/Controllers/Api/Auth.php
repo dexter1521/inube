@@ -13,7 +13,17 @@ class Auth extends ResourceController
 
     public function login()
     {
-        $json = $this->request->getJSON();
+
+        try {
+            $body = file_get_contents('php://input');
+            $json = json_decode($body);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return $this->fail('JSON inválido: ' . json_last_error_msg(), 400);
+            }
+        } catch (\CodeIgniter\HTTP\Exceptions\HTTPException $e) {
+            return $this->fail('JSON inválido', 400);
+        }
         $email = $json->email ?? $json->username ?? null;
         $password = $json->password ?? null;
 

@@ -37,6 +37,8 @@ class Filters extends BaseConfig
         'before' => [
             'jwt' => [
                 'except' => [
+                    '/',
+                    'login',
                     'api/auth/login',
                 ],
             ],

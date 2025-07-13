@@ -11,13 +11,14 @@ $routes->get('/', 'Auth::loginView');
 // Puedes usar el método group para agrupar rutas relacionadas
 // y aplicar un prefijo común a todas ellas
 $routes->group('administrator', function ($routes) {
+    $routes->get('/', 'Administrator::index');
     $routes->get('list-products', 'Administrator::list_products');
     $routes->get('create-product', 'Administrator::create_product');
     $routes->get('edit-product/(:num)', 'Administrator::edit/$1');
     $routes->get('list-users', 'Administrator::list_users');
     $routes->get('list-category', 'Administrator::list_category');
     $routes->get('list-brands', 'Administrator::list_brands');
-    $routes->get('panel', 'Administrator::index');
+    //$routes->get('panel', 'Administrator::index'); // Ruta para el panel de administración
 });
 
 

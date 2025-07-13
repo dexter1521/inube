@@ -6,8 +6,9 @@ class Administrator extends MyAdministrator
 {
     public function index()
     {
+        error_log('ENTRANDO A ADMINISTRATOR::INDEX');
         $data = [
-            'title' => 'Administración',
+            'title' => 'Dashboard',
             'subtitle' => 'Bienvenido al panel de administración'
         ];
         return $this->renderTemplate('view_dashboard', $data);
@@ -48,17 +49,13 @@ class Administrator extends MyAdministrator
 
     public function list_category()
     {
-        $data = [
-            'title' => 'Líneas'
-        ];
+        $data = ['title' => 'Líneas'];
         return $this->renderTemplate('lineas/index', $data);
     }
 
     public function list_brands()
     {
-        $data = [
-            'title' => 'Marcas'
-        ];
+        $data = ['title' => 'Marcas'];
         return $this->renderTemplate('marcas/index', $data);
     }
 }
