@@ -73,17 +73,38 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
-            localStorage.setItem('token', '');
+            // Limpiar mensajes previos al cargar la página
+            $('#message').empty();
+            $('.text-danger, .text-info, .text-warning, .text-success').remove();
+
+            // Limpiar token al cargar la página
+            localStorage.removeItem('token');
 
             $('#submit').click(function(event) {
                 event.preventDefault();
-                var email = $('#email').val();
+
+                // Limpiar mensajes de error previos
+                $('.text-danger').remove();
+                $('#message').empty();
+
+                var email = $('#email').val().trim();
                 var password = $('#contrasenia').val();
+
+                // Validación simple en el cliente
+                if (!email || !password) {
+                    if (!email) {
+                        $('#email').after('<span class="text-danger">El usuario es requerido</span>');
+                    }
+                    if (!password) {
+                        $('#contrasenia').after('<span class="text-danger">La contraseña es requerida</span>');
+                    }
+                    emptyText();
+                    return;
+                }
 
                 $.ajax({
                     url: API_URL + 'auth/login',
                     method: 'POST',
-                    processData: false,
                     contentType: 'application/json',
                     data: JSON.stringify({
                         email: email,
@@ -94,26 +115,17 @@
                         $('#submit').prop("disabled", true);
                     },
                     success: function(data) {
-                        console.log(data);
-
-                        if (data.success === false && data.status == 200) {
-                            // Manejar mensajes de error de campos específicos
-                            var fieldMessages = data.messages;
-                            for (var key in fieldMessages) {
-                                if (fieldMessages.hasOwnProperty(key)) {
-                                    var message = fieldMessages[key];
-                                    if (message) {
-                                        $('#' + key).after('<span class="text-danger">' + message + '</span>');
-                                    }
+                        if (data.success === false && data.status == 200 && data.messages) {
+                            // Mostrar mensajes de error de campos específicos
+                            $.each(data.messages, function(key, message) {
+                                if (message) {
+                                    $('#' + key).after('<span class="text-danger">' + message + '</span>');
                                 }
-                            }
+                            });
                             emptyText();
-                        } else {
-                            // Asegurarse de guardar solo el token sin 'Bearer'
-                            var token = data.token;
-                            if (token.startsWith('Bearer ')) {
-                                token = token.substring(7);
-                            }
+                        } else if (data.token) {
+                            // Guardar solo el token sin 'Bearer'
+                            var token = data.token.startsWith('Bearer ') ? data.token.substring(7) : data.token;
                             localStorage.setItem('token', token);
                             document.cookie = "token=" + token + "; path=/";
                             $.ajaxSetup({
@@ -121,16 +133,17 @@
                                     'Authorization': 'Bearer ' + token
                                 }
                             });
-                            window.location.replace(BASE_URL + "Administrator");
+                            window.location.replace(BASE_URL + "administrator");
+                        } else {
+                            $("#message").html('<div class="text-white bg-danger text-center">Respuesta inesperada del servidor</div>');
+                            emptyText();
                         }
                     },
-                    error: function(xhr, textStatus, errorThrown) {
-                        console.log(xhr.responseJSON);
-                        var val = xhr.responseJSON;
-                        var errorMessage = '';
+                    error: function(xhr) {
+                        var val = xhr.responseJSON || {};
+                        var errorMessage = 'Ocurrió un error inesperado';
 
-                        // Manejar estructura de mensajes como { "messages": { "error": "Credenciales inválidas" } }
-                        if (val && val.messages) {
+                        if (val.messages) {
                             if (typeof val.messages === 'string') {
                                 errorMessage = val.messages;
                             } else if (val.messages.error) {
@@ -138,60 +151,31 @@
                             } else {
                                 errorMessage = JSON.stringify(val.messages);
                             }
+                        }
+
+                        if ([400, 401, 403].includes(xhr.status)) {
+                            $("#message").html('<div class="text-white bg-danger text-center">' + errorMessage + '</div>');
                         } else {
-                            errorMessage = 'Ocurrió un error inesperado';
+                            $("#message").html('<div class="text-white bg-danger text-center">Error: ' + xhr.status + '</div>');
                         }
-
-                        switch (xhr.status) {
-                            case 400:
-                            case 401:
-                            case 403:
-                                $("#message").html('<div class="text-white bg-danger text-center">' + errorMessage + '</div>');
-                                break;
-                            default:
-                                $("#message").html('<div class="text-white bg-danger text-center">' + 'Error: ' + xhr.status + '</div>');
-                                break;
-                        }
-
-                        setTimeout(function() {
-                            $("#message").empty();
-                        }, 5000);
+                        emptyText();
                     },
                     complete: function() {
-                        // Restaurar el botón después de la respuesta
                         $('#submit').html('Acceder');
                         $('#submit').prop("disabled", false);
                     }
-
                 });
-
             });
 
             function emptyText() {
-
-                $('.text-info').delay(500).show(10, function() {
-                    $(this).delay(3000).hide(10, function() {
+                setTimeout(function() {
+                    $('.text-danger, .text-info, .text-warning, .text-success').fadeOut(300, function() {
                         $(this).remove();
                     });
-                })
-
-                $('.text-warning').delay(2000).show(30, function() {
-                    $(this).delay(6000).hide(30, function() {
-                        $(this).remove();
+                    $('#message').fadeOut(300, function() {
+                        $(this).empty().show();
                     });
-                })
-
-                $('.text-danger').delay(500).show(10, function() {
-                    $(this).delay(3000).hide(10, function() {
-                        $(this).removeClass();
-                    });
-                });
-
-                $('.text-success').delay(500).show(10, function() {
-                    $(this).delay(3000).hide(10, function() {
-                        $(this).removeClass();
-                    });
-                });
+                }, 3000);
             }
         });
     </script>

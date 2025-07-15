@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use CodeIgniter\Controller;
@@ -14,9 +15,16 @@ class MyAdministrator extends Controller
     {
         parent::initController($request, $response, $logger);
 
-        // Leer el token desde la cookie y loguear para depuración
-        $token = $_COOKIE['token'] ?? null;
-        error_log('TOKEN EN COOKIE: ' . ($token ?: 'NO HAY TOKEN'));
+        // Buscar el token en el header Authorization o en la cookie
+        $token = null;
+        // 1. Buscar en header Authorization
+        $authHeader = isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : (isset($_SERVER['Authorization']) ? $_SERVER['Authorization'] : null);
+        if ($authHeader && preg_match('/Bearer\s(.+)/', $authHeader, $matches)) {
+            $token = $matches[1];
+        } else {
+            // 2. Buscar en cookie
+            $token = $_COOKIE['token'] ?? null;
+        }
 
         if (!$token) {
             return redirect()->to('/login');
