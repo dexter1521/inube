@@ -58,16 +58,16 @@
     <!-- Custom JS -->
     <script src="<?php echo base_url('assets/js/custom.js') ?>"></script>
 
-	<script src="<?php echo base_url('assets/js/utilidades.js') ?>"></script>
+    <script src="<?php echo base_url('assets/js/utilidades.js') ?>"></script>
 
     <!-- Agrega los estilos CSS de DataTable -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
-	<link rel="stylesheet" href="https://cdn.datatables.net/responsive/1.0.7/css/responsive.dataTables.min.css">
-	<script src="https://cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.js"></script>
-	<script src="https://cdn.datatables.net/responsive/1.0.7/js/responsive.dataTables.js"></script>
-	
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/1.0.7/css/responsive.dataTables.min.css">
+    <script src="https://cdn.datatables.net/responsive/1.0.7/js/dataTables.responsive.js"></script>
+    <script src="https://cdn.datatables.net/responsive/1.0.7/js/responsive.dataTables.js"></script>
+
 
     <!-- Agrega SweetAlert CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -81,7 +81,7 @@
     <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 
     <!-- Datepicker script -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/js/datepicker/bootstrap-datetimepicker.min.css') ?>">
     <script src="<?php echo base_url('assets/js/datepicker/bootstrap-datepicker.js') ?>"></script>
     <script src="<?php echo base_url('assets/js/datepicker/locales/bootstrap-datepicker.es.js') ?>"></script>
@@ -167,9 +167,6 @@
             display: none;
             margin-top: 10px;
         }
-
-
-
 
         @keyframes spin {
             0% {

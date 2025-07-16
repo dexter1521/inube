@@ -45,6 +45,7 @@ class Auth extends ResourceController
             'iat' => $iat,
             'exp' => $exp,
             'uid' => $user['id'],
+            'nombre' => $user['nombre'],
             'email' => $user['email'],
             'perfil' => $user['perfil'] ?? null
         ];
