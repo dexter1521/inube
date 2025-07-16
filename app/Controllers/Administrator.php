@@ -6,7 +6,6 @@ class Administrator extends MyAdministrator
 {
     public function index()
     {
-        error_log('ENTRANDO A ADMINISTRATOR::INDEX');
         $data = [
             'title' => 'Dashboard',
             'subtitle' => 'Bienvenido al panel de administración'
@@ -34,7 +33,7 @@ class Administrator extends MyAdministrator
     {
         $data = [
             'id' => $id,
-            // otros datos específicos para la vista de edición
+            'title' => 'Editar Producto'
         ];
         return $this->renderTemplate('productos/edit', $data);
     }

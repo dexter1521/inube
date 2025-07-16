@@ -18,7 +18,6 @@ $routes->group('administrator', function ($routes) {
     $routes->get('list-users', 'Administrator::list_users');
     $routes->get('list-category', 'Administrator::list_category');
     $routes->get('list-brands', 'Administrator::list_brands');
-    //$routes->get('panel', 'Administrator::index'); // Ruta para el panel de administración
 });
 
 
@@ -35,4 +34,5 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->put('productos/activar/(:num)', 'Api\Productos::activate/$1');
     $routes->resource('lineas');
     $routes->resource('marcas');
+    $routes->resource('impuestos');
 });

@@ -13,157 +13,114 @@
 		<div class="tab-pane fade show active" id="producto" role="tabpanel" aria-labelledby="producto-tab">
 			<!-- Contenido de la pestaña Producto -->
 			<form id="frmprods" method="post">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="card">
-							<div class="card-header bg-info text-white">
-								<!-- Información de producto -->
-							</div>
-							<div class="card-body">
-								<div class="row">
-									<div class="col-md-2">
-										<div class="form-group">
-											<label for="prod-ARTICULO">Clave</label>
-											<input type="text" class="form-control" id="prod-ARTICULO" name="prod-ARTICULO" onkeyup="mayusculas(this);">
-										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="form-group">
-											<label for="prod-DESCRIP">Nombre</label>
-											<input type="text" class="form-control" id="prod-DESCRIP" name="prod-DESCRIP" onkeyup="mayusculas(this);">
-										</div>
-									</div>
-									<div class="col-lg-2">
-										<label for="prod-LINEA">Linea</label>
-										<select class="form-control select2" id="prod-LINEA" name="prod-LINEA"></select>
-									</div>
-									<div class="col-lg-2">
-										<label for="prod-UNIDAD">Unidad</label>
-										<select class="form-control" id="prod-UNIDAD" name="prod-UNIDAD">
-											<option value="PZA">PZA</option>
-											<option value="KG">KG</option>
-											<option value="T">T</option>
-											<option value="LTR">LTR</option>
-											<option value="GAL">GAL</option>
-											<option value="JGO">JGO</option>
-										</select>
-									</div>
-									<div class="col-lg-2">
-										<label for="prod-IMPUESTO">Impuesto</label>
-										<select class="form-control select2" id="prod-IMPUESTO" name="prod-IMPUESTO"></select>
-									</div>
-								</div>
-							</div>
-						</div>
+				<div class="row g-3">
+					<div class="col-12 col-md-6 col-lg-3">
+						<label for="clave" class="form-label">Clave</label>
+						<input type="text" class="form-control" id="clave" name="clave" onkeyup="mayusculas(this);">
+					</div>
+					<div class="col-12 col-md-6 col-lg-3">
+						<label for="descripcion" class="form-label">Nombre</label>
+						<input type="text" class="form-control" id="descripcion" name="descripcion" onkeyup="mayusculas(this);">
+					</div>
+					<div class="col-12 col-md-6 col-lg-2">
+						<label for="linea" class="form-label">Línea</label>
+						<select class="form-control select2" id="linea" name="linea"></select>
+					</div>
+					<div class="col-12 col-md-6 col-lg-2">
+						<label for="unidad" class="form-label">Unidad</label>
+						<select class="form-control" id="unidad" name="unidad">
+							<option value="PZA">PZA</option>
+							<option value="KG">KG</option>
+							<option value="T">T</option>
+							<option value="LTR">LTR</option>
+							<option value="GAL">GAL</option>
+							<option value="JGO">JGO</option>
+						</select>
+					</div>
+					<div class="col-12 col-md-6 col-lg-2">
+						<label for="impuesto" class="form-label">Impuesto</label>
+						<select class="form-control select2" id="impuesto" name="impuesto"></select>
 					</div>
 				</div>
 
-				<div class="row">
-					<!-- Datos del producto -->
-					<div class="col-md-8">
-						<div class="card">
-							<div class="card-header bg-info text-white">
-								Precios y utilidades
-							</div>
+				<!-- Precios y utilidades y opciones -->
+				<div class="row g-3 mt-3">
+					<div class="col-12 col-md-8">
+						<div class="card h-100">
+							<div class="card-header bg-info text-white">Precios y utilidades</div>
 							<div class="card-body">
-								<div class="row">
-									<div class="col-md-3">
-										<div class="form-group">
-											<label for="prod-COSTOU">Costo Ultimo</label>
-											<input type="text" class="form-control" id="prod-COSTOU" name="prod-COSTOU" onkeyup="calcularUtilidades(); validarNumerosDecimales(this);">
-										</div>
+								<div class="row g-2">
+									<div class="col-12 col-md-4">
+										<label for="costoultimo" class="form-label">Costo Último</label>
+										<input type="text" class="form-control" id="costoultimo" name="costoultimo" onkeyup="calcularUtilidades(); validarNumerosDecimales(this);">
 									</div>
-									<div class="col-md-3">
-										<div class="form-group">
-											<label for="prod-PRECIO1">Precio predeterminado</label>
-											<input type="text" class="form-control" id="prod-PRECIO1" name="prod-PRECIO1" onkeyup="calcularUtilidades(); validarNumerosDecimales(this);">
-										</div>
+									<div class="col-12 col-md-4">
+										<label for="precio" class="form-label">Precio predeterminado</label>
+										<input type="text" class="form-control" id="precio" name="precio" onkeyup="calcularUtilidades(); validarNumerosDecimales(this);">
 									</div>
-									<div class="col-md-3">
-										<div class="form-group">
-											<label for="prod-U1">Utilidad</label>
-											<input type="text" class="form-control" name="prod-U1" id="prod-U1" readonly>
-										</div>
+									<div class="col-12 col-md-4">
+										<label for="u1" class="form-label">Utilidad</label>
+										<input type="text" class="form-control" name="u1" id="u1" readonly>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-md-3">
-										<div class="form-group">
-											<label for="prod-C2">Mayoreo 1 a partir de</label>
-											<input type="text" class="form-control" id="prod-C2" name="prod-C2" onkeyup="validarNumerosDecimales(this);">
-										</div>
+								<div class="row g-2 mt-2">
+									<div class="col-12 col-md-4">
+										<label for="c2" class="form-label">Mayoreo 1 a partir de</label>
+										<input type="text" class="form-control" id="c2" name="c2" onkeyup="validarNumerosDecimales(this);">
 									</div>
-									<div class="col-md-3">
-										<div class="form-group">
-											<label for="prod-PRECIO2">Precio mayoreo 1</label>
-											<input type="text" class="form-control" id="prod-PRECIO2" name="prod-PRECIO2" onkeyup="calcularUtilidades(); validarNumerosDecimales(this);">
-										</div>
+									<div class="col-12 col-md-4">
+										<label for="precio2" class="form-label">Precio mayoreo 1</label>
+										<input type="text" class="form-control" id="precio2" name="precio2" onkeyup="calcularUtilidades(); validarNumerosDecimales(this);">
 									</div>
-									<div class="col-md-3">
-										<div class="form-group">
-											<label for="prod-U2">Utilidad mayoreo 1</label>
-											<input type="text" class="form-control" name="prod-U2" id="prod-U2" readonly>
-										</div>
+									<div class="col-12 col-md-4">
+										<label for="u2" class="form-label">Utilidad mayoreo 1</label>
+										<input type="text" class="form-control" name="u2" id="u2" readonly>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-md-3">
-										<div class="form-group">
-											<label for="prod-C3">Mayoreo 2 a partir de</label>
-											<input type="text" class="form-control" id="prod-C3" name="prod-C3" onkeyup="validarNumerosDecimales(this);">
-										</div>
+								<div class="row g-2 mt-2">
+									<div class="col-12 col-md-4">
+										<label for="c3" class="form-label">Mayoreo 2 a partir de</label>
+										<input type="text" class="form-control" id="c3" name="c3" onkeyup="validarNumerosDecimales(this);">
 									</div>
-									<div class="col-md-3">
-										<div class="form-group">
-											<label for="prod-PRECIO3">Precio mayoreo 2</label>
-											<input type="text" class="form-control" id="prod-PRECIO3" name="prod-PRECIO3" onkeyup="calcularUtilidades(); validarNumerosDecimales(this);">
-										</div>
+									<div class="col-12 col-md-4">
+										<label for="precio3" class="form-label">Precio mayoreo 2</label>
+										<input type="text" class="form-control" id="precio3" name="precio3" onkeyup="calcularUtilidades(); validarNumerosDecimales(this);">
 									</div>
-									<div class="col-md-3">
-										<div class="form-group">
-											<label for="prod-U3">Utilidad mayoreo 2</label>
-											<input type="text" class="form-control" name="prod-U3" id="prod-U3" readonly>
-										</div>
+									<div class="col-12 col-md-4">
+										<label for="u3" class="form-label">Utilidad mayoreo 2</label>
+										<input type="text" class="form-control" name="u3" id="u3" readonly>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-
-					<!-- Caracteristicas del producto -->
-					<div class="col-md-4">
-						<div class="card">
-							<div class="card-header bg-info text-white">
-								Opciones
-							</div>
+					<div class="col-12 col-md-4">
+						<div class="card h-100">
+							<div class="card-header bg-info text-white">Opciones</div>
 							<div class="card-body">
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" id="prod-PARAVENTA" name="prod-PARAVENTA" checked>
-									<label class="form-check-label" for="prod-PARAVENTA">Artículo para venta</label>
+								<div class="form-check mb-2">
+									<input class="form-check-input" type="checkbox" id="paraventa" name="paraventa" checked>
+									<label class="form-check-label" for="paraventa">Artículo para venta</label>
 								</div>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" id="prod-Granel" name="prod-Granel">
-									<label class="form-check-label" for="prod-Granel">Venta a granel</label>
+								<div class="form-check mb-2">
+									<input class="form-check-input" type="checkbox" id="invent" name="invent" checked>
+									<label class="form-check-label" for="invent">Control de inventario</label>
 								</div>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" id="prod-Bloqueado" name="prod-Bloqueado">
-									<label class="form-check-label" for="prod-Bloqueado">Artículo bloqueado</label>
+								<div class="form-check mb-2">
+									<input class="form-check-input" type="checkbox" id="granel" name="granel">
+									<label class="form-check-label" for="granel">Venta a granel</label>
 								</div>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" id="prod-INVENT" name="prod-INVENT" checked>
-									<label class="form-check-label" for="prod-INVENT">Control de inventario</label>
+								<div class="form-check mb-2">
+									<input class="form-check-input" type="checkbox" id="speso" name="speso">
+									<label class="form-check-label" for="speso">Solicitud de peso</label>
 								</div>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" id="prod-speso" name="prod-speso">
-									<label class="form-check-label" for="prod-speso">Solicitud de peso</label>
+								<div class="form-check mb-2">
+									<input class="form-check-input" type="checkbox" id="bajocosto" name="bajocosto">
+									<label class="form-check-label" for="bajocosto">Debajo del costo</label>
 								</div>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" id="prod-costo" name="prod-costo">
-									<label class="form-check-label" for="prod-costo">Debajo del costo</label>
-								</div>
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" id="prod-BODEGA" name="prod-BODEGA" checked>
-									<label class="form-check-label" for="prod-BODEGA">Solo bodega</label>
+								<div class="form-check mb-2">
+									<input class="form-check-input" type="checkbox" id="bloqueado" name="bloqueado">
+									<label class="form-check-label" for="bloqueado">Artículo bloqueado</label>
 								</div>
 							</div>
 						</div>
@@ -171,62 +128,41 @@
 				</div>
 
 				<!-- Datos del SAT -->
-				<div class="row">
-					<div class="col-md-8">
+				<div class="row g-3 mt-3">
+					<div class="col-12">
 						<div class="card">
-							<div class="card-header bg-info text-white">
-								Requerimientos SAT
-							</div>
+							<div class="card-header bg-info text-white">Requerimientos SAT</div>
 							<div class="card-body">
-								<div class="row">
-									<div class="col-md-4">
-										<div class="form-group">
-											<label for="prod-claveprodserv">Clave de producto o servicio</label>
-											<input type="text" class="form-control" id="prod-claveprodserv" name="prod-claveprodserv">
-										</div>
+								<div class="row g-2">
+									<div class="col-12 col-md-4">
+										<label for="claveprodserv" class="form-label">Clave de producto o servicio</label>
+										<input type="text" class="form-control" id="claveprodserv" name="claveprodserv">
 									</div>
-									<div class="col-md-4">
-										<div class="form-group">
-											<label for="prod-claveunidad">Unidad</label>
-											<select class="form-control" id="prod-claveunidad" name="prod-claveunidad">
-												<option value="H87">H87 - Pieza</option>
-												<option value="E48">E48 - Servicio</option>
-												<option value="KGM">KGM - Kilogramo</option>
-												<option value="MTR">MTR - Metro</option>
-												<option value="LTR">LTR - Litro</option>
-												<option value="F52">F52 - Unidad de servicio</option>
-											</select>
-										</div>
+									<div class="col-12 col-md-4">
+										<label for="claveunidad" class="form-label">Unidad</label>
+										<select class="form-control" id="claveunidad" name="claveunidad">
+											<option value="H87">H87 - Pieza</option>
+											<option value="E48">E48 - Servicio</option>
+											<option value="KGM">KGM - Kilogramo</option>
+											<option value="MTR">MTR - Metro</option>
+											<option value="LTR">LTR - Litro</option>
+											<option value="F52">F52 - Unidad de servicio</option>
+										</select>
 									</div>
-									<div class="col-md-4">
-										<div class="form-group">
-											<label for="prod-objimpuesto">Objeto de Impuesto</label>
-											<select class="form-control" id="prod-objimpuesto" name="prod-objimpuesto">
-											</select>
-										</div>
+									<div class="col-12 col-md-4">
+										<label for="objimpuesto" class="form-label">Objeto de Impuesto</label>
+										<select class="form-control" id="objimpuesto" name="objimpuesto">
+										</select>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<!-- <div class="col-md-4">
-						<div class="card">
-							<div class="card-header bg-info text-white">
-								Claves
-							</div>
-							<div class="card-body">
-								<div class="form-group">
-									<label for="prod-BARCODE">Código de barras</label>
-									<input type="text" class="form-control" id="prod-BARCODE" placeholder="--">
-								</div>
-							</div>
-						</div>
-					</div> -->
 				</div>
 
-				<div class="row">
-					<div class="col-md-2">
-						<button type="button" id="prod-save" class="btn btn-success">
+				<div class="row mt-4">
+					<div class="col-12">
+						<button type="button" id="prod-save" class="btn btn-success btn-lg w-100">
 							<i class="bx bx-save" aria-hidden="true"></i> Guardar
 						</button>
 					</div>
@@ -237,11 +173,11 @@
 
 		<!-- Contenido de la pestaña Imagen -->
 		<div class="tab-pane fade" id="imagen" role="tabpanel" aria-labelledby="imagen-tab">
-			<div class="row">
-				<form action="post" id="form" class="w-100">
-					<input type="hidden" name="cvearticulo" value="">
-					<div class="col-md-4">
-						<div class="input-group">
+			<form action="post" id="form" class="w-100">
+				<input type="hidden" name="cvearticulo" value="">
+				<div class="row g-3 align-items-center">
+					<div class="col-12 col-md-6">
+						<div class="input-group mb-3">
 							<div class="custom-file">
 								<input type="file" class="custom-file-input" name="picture1" id="picture1" onchange="previewImage(this, 'preview1')" accept="image/*">
 								<label class="custom-file-label" for="picture1">Adjuntar archivo (Fotografía)</label>
@@ -251,14 +187,14 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-8">
-						<img id="preview1" src="#" alt="Vista previa de la imagen">
+					<div class="col-12 col-md-6 text-center">
+						<img id="preview1" src="#" alt="Vista previa de la imagen" class="img-fluid rounded border" style="max-height: 250px;">
 					</div>
-					<div class="col-md-12 mt-3">
-						<button type="button" id="btnSave" onclick="save()" class="btn btn-primary" disabled>Guardar</button>
+					<div class="col-12 mt-3">
+						<button type="button" id="btnSave" onclick="save()" class="btn btn-primary btn-lg w-100" disabled>Guardar imagen</button>
 					</div>
-				</form>
-			</div>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
@@ -291,32 +227,56 @@
 		});
 
 		$("#prod-save").click(function() {
-			var formData = $('#frmprods').serialize();
+			// Recolectar todos los datos del formulario automáticamente
+			var formArray = $('#frmprods').serializeArray();
+			var data = {};
+			formArray.forEach(function(item) {
+				data[item.name] = item.value;
+			});
+			// Incluir los checkboxes no marcados (valor 0 si no están en data)
+			$('#frmprods input[type="checkbox"]').each(function() {
+				if (!data.hasOwnProperty(this.name)) {
+					data[this.name] = 0;
+				} else {
+					data[this.name] = 1;
+				}
+			});
+
+			// Validar que línea e impuesto no envíen '#'
+			if (data.linea === "#") data.linea = "";
+			if (data.impuesto === "#") data.impuesto = "";
+			$('#prod-save').prop('disabled', true);
 			$.ajax({
-				url: API_URL + 'articulo/registrar',
+				url: API_URL + 'productos',
 				type: 'POST',
+				contentType: 'application/json',
 				headers: {
-					'token': token, // Agrega el token al encabezado
-					'Content-Type': 'application/json'
+					'token': token
 				},
-				data: formData,
+				data: JSON.stringify(data),
 				success: function(response) {
 					$('#loader').hide();
-					console.log(response); // Verificar la respuesta
-					if (response.status == 200 && response.success === false) {
-						handleValidationErrors(response.messages);
-						$('#prod-save').prop('disabled', false);
-					} else if (response.status == 200 && response.success === true) {
-						producto = $('#prod-ARTICULO').val();
+					if ((response.status === 201 || response.status === '201') || (response.status === true && response.data)) {
+						// Si la respuesta es exitosa y contiene datos del producto creado
+						producto = response.data.clave;
 						localStorage.setItem('cvearticulo', producto);
 						$('#btnSave').prop('disabled', false);
-						handleSuccess('¡Felicidades!', response.messages);
+						myMessages('success', '¡Felicidades!', response.messages || response.message || 'Producto creado correctamente.');
+						handleSuccess('¡Felicidades!', response.messages || response.message || 'Producto creado correctamente.');
 						$('#frmprods')[0].reset();
+					} else {
+						handleValidationErrors(response.errors || response.messages || response);
+						$('#prod-save').prop('disabled', false);
 					}
 				},
-				error: function(xhr, textStatus, errorThrown) {
+				error: function(xhr) {
 					$('#loader').hide();
-					handleAjaxError(xhr);
+					// Intentar extraer y mostrar errores de validación si existen
+					if (xhr.responseJSON && xhr.responseJSON.errors) {
+						handleValidationErrors(xhr.responseJSON);
+					} else {
+						handleAjaxError(xhr);
+					}
 					$('#prod-save').prop('disabled', false);
 				}
 			});
@@ -362,26 +322,22 @@
 	}
 
 	function calcularUtilidades() {
-		const costoU = parseFloat(document.getElementById('prod-COSTOU').value) || 0;
-		const precio1 = parseFloat(document.getElementById('prod-PRECIO1').value) || 0;
-		const precio2 = parseFloat(document.getElementById('prod-PRECIO2').value) || 0;
-		const precio3 = parseFloat(document.getElementById('prod-PRECIO3').value) || 0;
+		const costoU = parseFloat(document.getElementById('costoultimo').value) || 0;
+		const precio1 = parseFloat(document.getElementById('precio').value) || 0;
+		const precio2 = parseFloat(document.getElementById('precio2').value) || 0;
+		const precio3 = parseFloat(document.getElementById('precio3').value) || 0;
 
 		const utilidad1 = calcularUtilidad(costoU, precio1);
 		const utilidad2 = calcularUtilidad(costoU, precio2);
 		const utilidad3 = calcularUtilidad(costoU, precio3);
 
-		document.getElementById('prod-U1').value = utilidad1.toFixed(2);
-		document.getElementById('prod-U2').value = utilidad2.toFixed(2);
-		document.getElementById('prod-U3').value = utilidad3.toFixed(2);
+		document.getElementById('u1').value = utilidad1.toFixed(2);
+		document.getElementById('u2').value = utilidad2.toFixed(2);
+		document.getElementById('u3').value = utilidad3.toFixed(2);
 	}
 
 	function calcularUtilidad(costo, precio) {
 		if (costo === 0) return 0;
 		return ((precio - costo) / costo) * 100;
 	}
-
-	/* function validarNumerosDecimales(input) {
-		input.value = input.value.replace(/[^0-9.]/g, '');
-	} */
 </script>

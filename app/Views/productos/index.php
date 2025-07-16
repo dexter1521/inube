@@ -36,7 +36,7 @@
 
 <script>
     $(document).ready(function() {
-        $('#tablaDatos').DataTable({
+        var table = $('#tablaDatos').DataTable({
             "ajax": {
                 "url": API_URL  + "productos",
                 "type": "GET",
@@ -69,6 +69,11 @@
                     }
                 }
             ]
+        });
+        // Redirigir a la vista de edición al hacer clic en Editar
+        $('#tablaDatos').on('click', '.btn-editar', function() {
+            var id = $(this).data('id');
+            window.location.href = 'edit-product/' + id;
         });
     });
 </script>

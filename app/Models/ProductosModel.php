@@ -36,21 +36,52 @@ class ProductosModel extends Model
 
     protected $validationRules = [
         'clave' => 'required|max_length[50]|is_unique[productos.clave,clave,{ID}]', // Esto se realiza para poder validar el update
-        'descripcion' => 'permit_empty',
+        'descripcion' => 'required|trim|max_length[255]',
         'costoultimo' => 'required|decimal',
         'precio' => 'required|decimal',
-        'linea' => 'permit_empty',
-        'unidad' => 'permit_empty',
-        'bloqueado' => 'permit_empty|in_list[0,1]'
+        'linea' => 'required',
+        'unidad' => 'required',
+        //'marca' => 'required',
+        'impuesto' => 'required',
+        'c2' => 'required',
+        'precio2' => 'required|decimal',
+        'c3' => 'required',
+        'precio3' => 'required|decimal',
+        'paraventa' => 'required',
+        'invent' => 'required',
+        
+
+        /*
+        
+        'bloqueado' => 'required',
+        'granel' => 'required',
+        'speso' => 'required',
+        'precio4' => 'required|decimal',
+        'precio5' => 'required|decimal',
+        'precio6' => 'required|decimal',
+        'precio7' => 'required|decimal',
+        'precio8' => 'required|decimal',
+        'precio9' => 'required|decimal',
+        'precio10' => 'required|decimal',
+        'c4' => 'required',
+        'c5' => 'required',
+        'c6' => 'required',
+        'c7' => 'required',
+        'c8' => 'required',
+        'c9' => 'required',
+        'c10' => 'required',
+        
+        
+        */
     ];
 
     protected $validationMessages = [
         'clave' => [
-            'required' => 'El campo clave es obligatorio.',
+            'required' => 'El campo articulo es obligatorio.',
             'is_unique' => 'La clave ya existe.'
         ],
         'descripcion' => [
-            'required' => 'El campo descripcion es obligatorio.'
+            'required' => 'El campo descripción es obligatorio.'
         ],
         'precio' => [
             'required' => 'El precio es obligatorio.',
