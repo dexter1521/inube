@@ -15,7 +15,7 @@
                 <div class="row g-3">
                     <div class="col-12 col-md-6 col-lg-3">
                         <label for="clave" class="form-label">Clave</label>
-                        <input type="text" class="form-control" id="clave" name="clave" onkeyup="mayusculas(this);">
+                        <input type="text" class="form-control" id="clave" name="clave" onkeyup="mayusculas(this);" readonly>
                     </div>
                     <div class="col-12 col-md-6 col-lg-3">
                         <label for="descripcion" class="form-label">Nombre</label>
