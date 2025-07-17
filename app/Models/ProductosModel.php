@@ -6,6 +6,37 @@ use CodeIgniter\Model;
 
 class ProductosModel extends Model
 {
+    protected $beforeUpdate = ['beforeUpdate'];
+    protected $forceCheckboxFields = [
+        'paraventa',
+        'invent',
+        'bloqueado',
+        'granel',
+        'speso',
+        'bajocosto'
+    ];
+
+    protected function beforeUpdate(array $data)
+    {
+        // Forzar que los campos tipo checkbox se actualicen aunque sean 0
+        if (isset($data['data'])) {
+            foreach ($this->forceCheckboxFields as $field) {
+                // Si el campo existe y su valor es '1', guardar como 1
+                if (array_key_exists($field, $data['data'])) {
+                    $data['data'][$field] = (intval($data['data'][$field]) ? 1 : 0);
+                } else {
+                    // Si no existe, guardar como 0
+                    $data['data'][$field] = 0;
+                }
+            }
+        }
+        // ...
+        // Log adicional para ver el array final de datos antes del update
+        if (isset($data['data'])) {
+            log_message('debug', 'Array final enviado a update: ' . json_encode($data['data']));
+        }
+        return $data;
+    }
     protected $table      = 'productos';
     protected $primaryKey = 'ID';
 
@@ -19,11 +50,42 @@ class ProductosModel extends Model
         'ubicacion',
         'unidad',
         'bloqueado',
+        'paraventa',
+        'invent',
+        'granel',
+        'speso',
+        'bajocosto',
         'impuesto',
         'existencia',
-        'precio2', 'precio3', 'precio4', 'precio5', 'precio6', 'precio7', 'precio8', 'precio9', 'precio10',
-        'u1', 'u2', 'u3', 'u4', 'u5', 'u6', 'u7', 'u8', 'u9', 'u10',
-        'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8', 'c9', 'c10',
+        'precio2',
+        'precio3',
+        'precio4',
+        'precio5',
+        'precio6',
+        'precio7',
+        'precio8',
+        'precio9',
+        'precio10',
+        'u1',
+        'u2',
+        'u3',
+        'u4',
+        'u5',
+        'u6',
+        'u7',
+        'u8',
+        'u9',
+        'u10',
+        'c1',
+        'c2',
+        'c3',
+        'c4',
+        'c5',
+        'c6',
+        'c7',
+        'c8',
+        'c9',
+        'c10',
         'costoultimo',
         'claveprodserv',
         'claveunidad'
@@ -49,7 +111,7 @@ class ProductosModel extends Model
         'precio3' => 'required|decimal',
         'paraventa' => 'required',
         'invent' => 'required',
-        
+
 
         /*
         

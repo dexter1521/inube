@@ -91,11 +91,15 @@ class Productos extends BaseApiController
             );
         }
 
+
         // Actualizar usando siempre el ID
         if (!$this->model->update($producto['ID'], $data)) {
             return $this->failValidationErrors($this->model->errors());
         }
 
-        return $this->successResponse('Producto actualizado correctamente.', $data, 200);
+        // Consultar el producto actualizado y mostrar los valores
+        $productoActualizado = $this->model->find($producto['ID']);
+
+        return $this->successResponse('Producto actualizado correctamente.', $productoActualizado, 200);
     }
 }

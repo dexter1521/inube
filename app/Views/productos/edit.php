@@ -246,7 +246,7 @@
                     }
                 },
                 error: function(xhr) {
-                     $('#loader').hide();
+                    $('#loader').hide();
                     $('#prod-update').prop('disabled', false);
                     if (xhr.responseJSON && xhr.responseJSON.errors) {
                         handleValidationErrors(xhr.responseJSON);
