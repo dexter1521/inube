@@ -15,9 +15,12 @@ $routes->group('administrator', function ($routes) {
     $routes->get('list-products', 'Administrator::list_products');
     $routes->get('create-product', 'Administrator::create_product');
     $routes->get('edit-product/(:num)', 'Administrator::edit/$1');
-    $routes->get('list-users', 'Administrator::list_users');
     $routes->get('list-category', 'Administrator::list_category');
     $routes->get('list-brands', 'Administrator::list_brands');
+    $routes->get('list-users', 'Administrator::list_users');
+    $routes->get('list_dispositivos', 'Administrator::list_dispositivos');
+    $routes->get('crear_dispositivos', 'Administrator::crear_dispositivos');
+    $routes->get('editar_dispositivos/(:num)', 'Administrator::editar_dispositivos/$1');
 });
 
 
@@ -35,4 +38,5 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->resource('lineas');
     $routes->resource('marcas');
     $routes->resource('impuestos');
+    $routes->resource('dispositivos');
 });

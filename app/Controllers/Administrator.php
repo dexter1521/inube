@@ -57,4 +57,23 @@ class Administrator extends MyAdministrator
         $data = ['title' => 'Marcas'];
         return $this->renderTemplate('marcas/index', $data);
     }
+
+    public function list_dispositivos()
+    {
+        $data = ['title' => 'Dispositivos'];
+        return $this->renderTemplate('dispositivos/index', $data);
+    }
+    public function crear_dispositivos()
+    {
+        $data = ['title' => 'Crear Dispositivo'];
+        return $this->renderTemplate('dispositivos/add', $data);
+    }
+    public function editar_dispositivos($id)
+    {
+        $data = [
+            'id' => $id,
+            'title' => 'Editar Dispositivo'
+        ];
+        return $this->renderTemplate('dispositivos/edit', $data);
+    }
 }
