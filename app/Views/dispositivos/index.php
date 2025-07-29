@@ -56,9 +56,9 @@
                 });
                 $('#tablaDispositivos tbody').html(rows);
                 $('#loader').hide();
-            }).fail(function() {
+            }).fail(function(xhr) {
                 $('#loader').hide();
-                alert('Error al cargar los dispositivos');
+                myMessages('error', 'Error al cargar dispositivos', xhr.responseJSON?.messages || xhr.responseJSON?.message || 'Error desconocido');
             });
         }
         cargarDispositivos();
@@ -74,22 +74,41 @@
             window.location.href = BASE_URL + 'administrator/editar_dispositivos/' + id;
         });
 
-        // Botón Eliminar
+        // Botón Eliminar con SweetAlert2
         $(document).on('click', '.btn-eliminar', function() {
             var id = $(this).data('id');
-            if (confirm('¿Seguro que deseas eliminar este dispositivo?')) {
-                $.ajax({
-                    url: API_URL + 'dispositivos/' + id,
-                    type: 'DELETE',
-                    success: function() {
-                        alert('Dispositivo eliminado correctamente');
-                        cargarDispositivos();
-                    },
-                    error: function() {
-                        alert('Error al eliminar el dispositivo');
-                    }
-                });
-            }
+            Swal.fire({
+                title: '¿Seguro que deseas eliminar este dispositivo?',
+                text: "Esta acción no se puede deshacer.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: API_URL + 'dispositivos/' + id,
+                        type: 'DELETE',
+                        success: function() {
+                            Swal.fire(
+                                '¡Eliminado!',
+                                'Dispositivo eliminado correctamente.',
+                                'success'
+                            );
+                            cargarDispositivos();
+                        },
+                        error: function(xhr) {
+                            Swal.fire(
+                                'Error',
+                                xhr.responseJSON?.messages || xhr.responseJSON?.message || 'Error desconocido',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
         });
     });
 </script>
