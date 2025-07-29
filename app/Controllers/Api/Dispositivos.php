@@ -23,7 +23,12 @@ class Dispositivos extends ResourceController
 
     public function create()
     {
-        $data = $this->request->getJSON(true);
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        // Si 'dispositivo' no está presente, usar el valor de 'nombre'
+        if (empty($data['dispositivo']) && !empty($data['nombre'])) {
+            $data['dispositivo'] = $data['nombre'];
+        }
         if (!$this->model->insert($data)) {
             return $this->failValidationErrors($this->model->errors());
         }
@@ -35,7 +40,10 @@ class Dispositivos extends ResourceController
     {
         $json = file_get_contents('php://input');
         $data = json_decode($json, true);
-
+        // Si 'dispositivo' no está presente, usar el valor de 'nombre'
+        if (empty($data['dispositivo']) && !empty($data['nombre'])) {
+            $data['dispositivo'] = $data['nombre'];
+        }
         if (!$this->model->update($id, $data)) {
             return $this->failValidationErrors($this->model->errors());
         }

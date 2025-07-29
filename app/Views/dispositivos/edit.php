@@ -112,7 +112,7 @@ $(document).ready(function() {
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: function(response) {
-                alert('Dispositivo actualizado correctamente');
+                myMessages('success', '¡Felicidades!', response.messages || response.message || 'Dispositivo actualizado correctamente.');
                 window.location.href = BASE_URL + 'administrator/list_dispositivos';
             },
             error: function(xhr) {
@@ -120,7 +120,7 @@ $(document).ready(function() {
                 if (xhr && xhr.responseText) {
                     msg += '\n' + xhr.responseText;
                 }
-                alert(msg);
+                myMessages('error', 'Error al actualizar dispositivo', xhr.responseJSON.messages || xhr.responseJSON.message || 'Error desconocido');
             }
         });
     });

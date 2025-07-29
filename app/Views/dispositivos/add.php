@@ -77,11 +77,11 @@ $('#formAddDispositivo').submit(function(e) {
         contentType: 'application/json',
         data: JSON.stringify(data),
         success: function(response) {
-            alert('Dispositivo agregado correctamente');
-            window.location.href = BASE_URL + 'dispositivos';
+            myMessages('success', '¡Felicidades!', response.messages || response.message || 'Dispositivo creado correctamente.');
+            window.location.href = BASE_URL + 'administrator/list_dispositivos';
         },
         error: function(xhr) {
-            alert('Error al agregar dispositivo');
+            myMessages('error', 'Error al agregar dispositivo', xhr.responseJSON.messages || xhr.responseJSON.message || 'Error desconocido');
         }
     });
 });
