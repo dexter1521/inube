@@ -32,6 +32,20 @@ class Productos extends BaseApiController
         }
 
         $data['id'] = $this->model->getInsertID();
+        $clave = $data['clave'];
+
+        // Insertar registros en prods_download para cada dispositivo activo
+        $dispositivoModel = model('App\Models\DispositivosModel');
+        $prodsDownloadModel = model('App\Models\ProdsDownloadModel');
+        $dispositivos = $dispositivoModel->where('activo', 1)->findAll();
+        foreach ($dispositivos as $disp) {
+            $prodsDownloadModel->insert([
+                'clave' => $clave,
+                'dispositivo' => $disp['dispositivo'],
+                'aplicado' => 0,
+                'fecha_registro' => date('Y-m-d H:i:s')
+            ]);
+        }
 
         return $this->successResponse('Producto creado correctamente.', $data, 201);
     }
@@ -97,9 +111,33 @@ class Productos extends BaseApiController
             return $this->failValidationErrors($this->model->errors());
         }
 
-        // Consultar el producto actualizado y mostrar los valores
-        $productoActualizado = $this->model->find($producto['ID']);
+        $clave = isset($data['clave']) ? $data['clave'] : $producto['clave'];
+        // Insertar o actualizar registros en prods_download para cada dispositivo activo
+        $dispositivoModel = model('App\Models\DispositivosModel');
+        $prodsDownloadModel = model('App\Models\ProdsDownloadModel');
+        $dispositivos = $dispositivoModel->where('activo', 1)->findAll();
+        foreach ($dispositivos as $disp) {
+            // Si ya existe el registro, lo pone como pendiente
+            $row = $prodsDownloadModel->where([
+                'clave' => $clave,
+                'dispositivo' => $disp['nombre']
+            ])->first();
+            if ($row) {
+                $prodsDownloadModel->update($row['id'], [
+                    'aplicado' => 0,
+                    'fecha_aplicado' => null
+                ]);
+            } else {
+                $prodsDownloadModel->insert([
+                    'clave' => $clave,
+                    'dispositivo' => $disp['nombre'],
+                    'aplicado' => 0,
+                    'fecha_registro' => date('Y-m-d H:i:s')
+                ]);
+            }
+        }
 
+        $productoActualizado = $this->model->find($producto['ID']);
         return $this->successResponse('Producto actualizado correctamente.', $productoActualizado, 200);
     }
 }

@@ -39,4 +39,6 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->resource('marcas');
     $routes->resource('impuestos');
     $routes->resource('dispositivos');
+    $routes->get('prods_download/pendientes/(:any)', 'ProdsDownload::pendientes/$1');
+    $routes->post('prods_download/aplicar', 'ProdsDownload::aplicar');
 });
