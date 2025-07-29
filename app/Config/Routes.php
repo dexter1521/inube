@@ -21,6 +21,7 @@ $routes->group('administrator', function ($routes) {
     $routes->get('list_dispositivos', 'Administrator::list_dispositivos');
     $routes->get('crear_dispositivos', 'Administrator::crear_dispositivos');
     $routes->get('editar_dispositivos/(:num)', 'Administrator::editar_dispositivos/$1');
+    $routes->get('sucTareas', 'Administrator::sucTareas');
 });
 
 
