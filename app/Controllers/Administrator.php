@@ -76,4 +76,15 @@ class Administrator extends MyAdministrator
         ];
         return $this->renderTemplate('dispositivos/edit', $data);
     }
+
+    public function sucTareas()
+    {
+        $dispositivoModel = model('App\Models\DispositivosModel');
+        $dispositivos = $dispositivoModel->where('activo', 1)->findAll();
+        $data = [
+            'title' => 'Tareas de Sincronización',
+            'dispositivos' => $dispositivos
+        ];
+        return $this->renderTemplate('dispositivos/sucTareas', $data);
+    }
 }
