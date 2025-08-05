@@ -4,6 +4,26 @@ namespace App\Controllers;
 
 class Administrator extends MyAdministrator
 {
+    public function runMigrations()
+    {
+        // Puedes proteger esto con login o clave si lo deseas
+        $migrate = \Config\Services::migrations();
+        try {
+            $migrate->latest();
+            $data = [
+                'title' => 'Migraciones',
+                'message' => 'Migraciones ejecutadas correctamente.',
+                'success' => true
+            ];
+        } catch (\Throwable $e) {
+            $data = [
+                'title' => 'Migraciones',
+                'message' => 'Error: ' . $e->getMessage(),
+                'success' => false
+            ];
+        }
+        return $this->renderTemplate('configuracion/view_migrations', $data);
+    }
 
     public function index()
     {
