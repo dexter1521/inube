@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 class Administrator extends MyAdministrator
 {
+
     public function index()
     {
         $data = [
@@ -63,11 +64,13 @@ class Administrator extends MyAdministrator
         $data = ['title' => 'Dispositivos'];
         return $this->renderTemplate('dispositivos/index', $data);
     }
+
     public function crear_dispositivos()
     {
         $data = ['title' => 'Crear Dispositivo'];
         return $this->renderTemplate('dispositivos/add', $data);
     }
+
     public function editar_dispositivos($id)
     {
         $data = [
@@ -86,5 +89,13 @@ class Administrator extends MyAdministrator
             'dispositivos' => $dispositivos
         ];
         return $this->renderTemplate('dispositivos/sucTareas', $data);
+    }
+
+    public function clean_db()
+    {
+        $data = [
+            'title' => 'Limpieza de Base de Datos'
+        ];
+        return $this->renderTemplate('configuracion/view_clean_db', $data);
     }
 }

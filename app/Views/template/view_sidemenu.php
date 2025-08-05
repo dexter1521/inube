@@ -116,6 +116,13 @@
 						</a>
 					</li>
 
+					<li class="nav-item">
+						<a href="<?php echo base_url('administrator/clean_db'); ?>" class="nav-link">
+							<span class="icon"><i class='bx bx-right-arrow-alt'></i></span>
+							<span class="menu-title">Limpiar DB</span>
+						</a>
+					</li>
+
 				</ul>
 			</li>
 

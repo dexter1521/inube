@@ -22,6 +22,7 @@ $routes->group('administrator', function ($routes) {
     $routes->get('crear_dispositivos', 'Administrator::crear_dispositivos');
     $routes->get('editar_dispositivos/(:num)', 'Administrator::editar_dispositivos/$1');
     $routes->get('sucTareas', 'Administrator::sucTareas');
+    $routes->get('clean_db', 'Administrator::clean_db');
 });
 
 
@@ -42,4 +43,6 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], function ($routes)
     $routes->resource('dispositivos');
     $routes->get('prods_download/pendientes/(:any)', 'ProdsDownload::pendientes/$1');
     $routes->post('prods_download/aplicar', 'ProdsDownload::aplicar');
+    // Endpoint protegido para limpiar la base de datos
+    $routes->post('maintenance/clean', 'Maintenance::clean');
 });
