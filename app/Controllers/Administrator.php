@@ -4,6 +4,43 @@ namespace App\Controllers;
 
 class Administrator extends MyAdministrator
 {
+    public function db_explorer()
+    {
+        $db = \Config\Database::connect();
+        $tables = $db->listTables();
+        $selectedTable = $this->request->getGet('table');
+        $structure = $rows = $queryResult = $error = null;
+        $sql = $this->request->getPost('sql');
+
+        if ($selectedTable) {
+            $structure = $db->getFieldData($selectedTable);
+            $rows = $db->table($selectedTable)->limit(20)->get()->getResultArray();
+        }
+
+        if ($sql) {
+            if (stripos(trim($sql), 'select') === 0) {
+                try {
+                    $queryResult = $db->query($sql)->getResultArray();
+                } catch (\Throwable $e) {
+                    $error = $e->getMessage();
+                }
+            } else {
+                $error = 'Solo se permiten consultas SELECT.';
+            }
+        }
+
+        $data = [
+            'title' => 'Admin DB Explorer',
+            'tables' => $tables,
+            'selectedTable' => $selectedTable,
+            'structure' => $structure,
+            'rows' => $rows,
+            'sql' => $sql,
+            'queryResult' => $queryResult,
+            'error' => $error
+        ];
+        return $this->renderTemplate('configuracion/view_db_explorer', $data);
+    }
     public function runMigrations()
     {
         // Puedes proteger esto con login o clave si lo deseas

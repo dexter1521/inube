@@ -23,6 +23,7 @@ $routes->group('administrator', function ($routes) {
     $routes->get('editar_dispositivos/(:num)', 'Administrator::editar_dispositivos/$1');
     $routes->get('sucTareas', 'Administrator::sucTareas');
     $routes->get('clean_db', 'Administrator::clean_db');
+    $routes->match(['get', 'post'], 'db_explorer', 'Administrator::db_explorer');
     $routes->match(['get', 'post'], 'runMigrations', 'Administrator::runMigrations');
 });
 
