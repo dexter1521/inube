@@ -54,28 +54,28 @@
 
 				<ul class="sidemenu-nav-second-level">
 
-					<li class="nav-item">
+					<li class="nav-item menu-administrador">
 						<a href="<?php echo base_url('administrator/list-category'); ?>" class="nav-link">
 							<span class="icon"><i class='bx bx-badge-check'></i></span>
 							<span class="menu-title">Lineas</span>
 						</a>
 					</li>
 
-					<li class="nav-item">
+					<li class="nav-item menu-administrador">
 						<a href="<?php echo base_url('administrator/list-brands'); ?>" class="nav-link">
 							<span class="icon"><i class='bx bx-badge-check'></i></span>
 							<span class="menu-title">Marcas</span>
 						</a>
 					</li>
 
-					<li class="nav-item">
+					<li class="nav-item menu-administrador">
 						<a href="<?php echo base_url('administrator/list-products'); ?>" class="nav-link">
 							<span class="icon"><i class='bx bx-right-arrow-alt'></i></span>
 							<span class="menu-title">Catalogo Gral.</span>
 						</a>
 					</li>
 
-					<li class="nav-item">
+					<li class="nav-item menu-administrador">
 						<a href="<?php echo base_url('administrator/create-product'); ?>" class="nav-link">
 							<span class="icon"><i class='bx bx-right-arrow-alt'></i></span>
 							<span class="menu-title">Alta Producto</span>
@@ -95,21 +95,22 @@
 					<span class="menu-title">Configuraciones</span>
 				</a>
 				<ul class="sidemenu-nav-second-level">
-					<li class="nav-item">
+					<li class="nav-item menu-administrador">
 						<a href="<?php echo base_url('administrator/list_dispositivos'); ?>" class="nav-link">
 							<span class="icon"><i class='bx bx-right-arrow-alt'></i></span>
 							<span class="menu-title">Dispositivos</span>
 						</a>
 					</li>
 
-					<li class="nav-item">
+					<li class="nav-item menu-administrador">
 						<a href="<?php echo base_url('administrator/sucTareas'); ?>" class="nav-link">
 							<span class="icon"><i class='bx bx-right-arrow-alt'></i></span>
 							<span class="menu-title">Suc.Tareas</span>
 						</a>
 					</li>
 
-					<li class="nav-item">
+
+					<li class="nav-item menu-administrador">
 						<a href="<?php echo base_url('administrator/list-users'); ?>" class="nav-link">
 							<span class="icon"><i class='bx bx-right-arrow-alt'></i></span>
 							<span class="menu-title">Usuarios</span>
@@ -118,21 +119,21 @@
 
 
 
-					<li class="nav-item">
+					<li class="nav-item menu-administrador">
 						<a href="<?php echo base_url('administrator/clean_db'); ?>" class="nav-link">
 							<span class="icon"><i class='bx bx-right-arrow-alt'></i></span>
 							<span class="menu-title">Limpiar DB</span>
 						</a>
 					</li>
 
-					<li class="nav-item">
+					<li class="nav-item menu-administrador">
 						<a href="<?php echo base_url('administrator/db_explorer'); ?>" class="nav-link">
 							<span class="icon"><i class='bx bx-table'></i></span>
 							<span class="menu-title">Explorador DB</span>
 						</a>
 					</li>
 
-					<li class="nav-item">
+					<li class="nav-item menu-administrador">
 						<a href="<?php echo base_url('administrator/runMigrations'); ?>" class="nav-link">
 							<span class="icon"><i class='bx bx-refresh'></i></span>
 							<span class="menu-title">Ejecutar Migraciones</span>

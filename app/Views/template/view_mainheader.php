@@ -10,6 +10,12 @@
             validarSesion();
         });
 
+        // Manejador global para errores AJAX: redirige al login si la sesión expira
+        $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
+            if (jqxhr.status === 401) {window.location.href = BASE_URL;}
+        });
+
+
         function validarSesion() {
             var token = localStorage.getItem('token');
             if (token && token !== 'undefined') {
@@ -29,6 +35,23 @@
                     }
                     if (tokenData.nombre) {
                         $(".name").text(tokenData.nombre);
+                    }
+                    // Ocultar menús según perfil (numérico)
+                    if (tokenData.perfil) {
+                        window.userPerfil = tokenData.perfil;
+                        // Solo el perfil 1 (Supervisor) ve .menu-supervisor
+                        if (parseInt(tokenData.perfil) !== 1) {
+                            $(".menu-supervisor").hide();
+                        }
+                        // Ejemplo: solo perfil 2 (Administrador) ve .menu-administrador
+                        if (parseInt(tokenData.perfil) !== 2) {
+                            $(".menu-administrador").hide();
+                        }
+                        // Ejemplo: solo perfil 3 (Usuario) ve .menu-usuario
+                        if (parseInt(tokenData.perfil) !== 3) {
+                            $(".menu-usuario").hide();
+                        }
+                        // Puedes agregar más reglas aquí para otros perfiles
                     }
                     console.log('El token aún es válido vaquero!');
                 } catch (e) {

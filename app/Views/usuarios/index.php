@@ -67,10 +67,9 @@
                     <div class="form-group">
                         <label for="perfil">Perfil</label>
                         <select class="form-control mb-2" id="perfil" name="perfil">
-                            <option value="1">Administrador</option>
-                            <option value="2">Usuario</option>
-                            <option value="3">Invitado</option>
-                            <option value="4">Desarrollador</option>
+                            <option value="1">Supervisor</option>
+                            <option value="2">Administrador</option>
+                            <option value="3">Usuario</option>
                         </select>
                     </div>
 
