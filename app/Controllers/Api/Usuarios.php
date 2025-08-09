@@ -76,6 +76,9 @@ class Usuarios extends BaseApiController
             ], 400);
         }
 
+        // Agregar el campo id para la validación is_unique
+        $data['id'] = $id;
+
         if (!$this->model->update($id, $data)) {
             return $this->respond([
                 'status' => false,

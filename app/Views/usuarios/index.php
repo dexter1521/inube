@@ -54,6 +54,7 @@
                     <div class="form-group">
                         <label for="correo">Correo electronico</label>
                         <input type="email" class="form-control mb-2" id="correo" name="correo" onkeyup="isValidEmail(this);">
+<div id="messages" style="display:none;"></div>
                     </div>
 
                     <div class="form-group">
@@ -113,14 +114,15 @@
                 perfil: $('#perfil').val()
             };
 
+
             // Validación básica del lado del cliente (opcional)
             if (!usuario.nombre || !usuario.email) {
                 showMessage('warning', 'Nombre y email son campos obligatorios');
                 return;
             }
 
-            // Configurar la petición AJAX
-            const url = id == 0 ? 'http://localhost:8080/api/usuarios' : `http://localhost:8080/api/usuarios/${id}`;
+            // Usar API_URL dinámico
+            const url = id == 0 ? `${API_URL}/usuarios` : `${API_URL}/usuarios/${id}`;
             const metodo = id == 0 ? 'POST' : 'PUT';
 
             // Mostrar loader
@@ -134,56 +136,52 @@
                 dataType: 'json',
                 success: function(response) {
                     $('#loader').hide();
-
                     if (response.status) {
-                        // Éxito - mostrar mensaje y limpiar formulario
-                        const successMessage = Array.isArray(response.messages) ?
-                            response.messages.join('<br>') :
-                            response.messages ||
-                            (id == 0 ? 'Usuario creado exitosamente' : 'Usuario actualizado exitosamente');
-
-                        showMessage('success', successMessage);
+                        handleSuccess('¡Éxito!', response.messages || (id == 0 ? 'Usuario creado exitosamente' : 'Usuario actualizado exitosamente'));
                         $('#myModal').modal('hide');
                         $('#frmUsuario')[0].reset();
-                        cargarUsuarios(); // Refrescar tabla
-
-                        // Opcional: Manejar datos adicionales de respuesta
+                        cargarUsuarios();
                         if (response.data) {
                             console.log('Datos adicionales:', response.data);
                         }
                     } else {
-                        // El API devolvió status:false pero no necesariamente es un error HTTP
                         handleValidationErrors(response);
                     }
                 },
                 error: function(xhr) {
                     $('#loader').hide();
-
-                    // Intentar parsear la respuesta de error
-                    let errorResponse;
-                    try {
-                        errorResponse = xhr.responseJSON || JSON.parse(xhr.responseText);
-                    } catch (e) {
-                        errorResponse = {
-                            status: false,
-                            messages: 'Error en el servidor',
-                            errors: {}
-                        };
-                    }
-
-                    // Manejar diferentes tipos de errores
-                    if (xhr.status === 422 || (errorResponse && errorResponse.errors)) {
-                        // Errores de validación
-                        handleValidationErrors(errorResponse);
-                    } else if (xhr.status === 409) {
-                        // Conflicto (ej. email duplicado)
-                        showMessage('warning', errorResponse.messages || 'El email ya está registrado');
-                    } else {
-                        // Otros errores
-                        handleAjaxError(xhr);
-                    }
+                    handleAjaxError(xhr);
                 }
             });
+        });
+
+
+        // Confirmar cierre del modal si hay cambios sin guardar
+        let formOriginal = null;
+        $('#myModal').on('show.bs.modal', function () {
+            formOriginal = $('#frmUsuario').serialize();
+        });
+        $(document).on('click', '.btn-cerrar, .close', function(e) {
+            const formActual = $('#frmUsuario').serialize();
+            if (formOriginal !== null && formOriginal !== formActual) {
+                e.preventDefault();
+                Swal.fire({
+                    title: '¿Cerrar sin guardar?',
+                    text: 'Tienes cambios sin guardar. ¿Deseas cerrar el formulario?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, cerrar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#myModal').modal('hide');
+                        $('#frmUsuario')[0].reset();
+                        formOriginal = null;
+                    }
+                });
+            }
         });
 
         $('#btn-nuevo').click(function() {
@@ -220,8 +218,9 @@
         });
     }
 
+
     function editarUsuario(id) {
-        $.get(`http://localhost:8080/api/usuarios/${id}`, function(response) {
+        $.get(`${API_URL}/usuarios/${id}`, function(response) {
             const usuario = response.data;
             $('#nombre').val(usuario.nombre);
             $('#correo').val(usuario.email);
@@ -230,6 +229,41 @@
             $('#is_admin').val(usuario.is_admin);
             $('#id').val(usuario.id);
             $('#myModal').modal('show');
+        });
+    }
+
+    function desactivarUsuario(id) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¿Seguro que deseas desactivar este usuario?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, desactivar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#loader').show();
+                $.ajax({
+                    url: `${API_URL}/usuarios/${id}`,
+                    type: 'DELETE',
+                    dataType: 'json',
+                    success: function(response) {
+                        $('#loader').hide();
+                        if (response.status) {
+                            handleSuccess('¡Éxito!', response.messages || 'Usuario desactivado correctamente');
+                            cargarUsuarios();
+                        } else {
+                            handleValidationErrors(response);
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#loader').hide();
+                        handleAjaxError(xhr);
+                    }
+                });
+            }
         });
     }
 
