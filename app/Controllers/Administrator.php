@@ -41,6 +41,7 @@ class Administrator extends MyAdministrator
         ];
         return $this->renderTemplate('configuracion/view_db_explorer', $data);
     }
+
     public function runMigrations()
     {
         // Puedes proteger esto con login o clave si lo deseas
@@ -154,5 +155,11 @@ class Administrator extends MyAdministrator
             'title' => 'Limpieza de Base de Datos'
         ];
         return $this->renderTemplate('configuracion/view_clean_db', $data);
+    }
+
+    public function list_impuestos()
+    {
+        $data = ['title' => 'Impuestos'];
+        return $this->renderTemplate('impuestos/index', $data);
     }
 }

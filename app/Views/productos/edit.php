@@ -179,8 +179,37 @@
     var productoId = <?= json_encode($id ?? null) ?>;
 
     $(document).ready(function() {
-        getLineas();
-        getImpuestos();
+        let productoData = null;
+        let lineasLoaded = false;
+
+        // Sobrescribir getLineas para aceptar callback
+        function getLineas(callback) {
+            $.ajax({
+                url: API_URL + 'lineas',
+                type: 'GET',
+                success: function(response) {
+                    let options = '';
+                    response.forEach(function(linea) {
+                        options += `<option value="${linea.linea}">${linea.linea}</option>`;
+                    });
+                    $('#linea').html(options);
+                    $('#linea').select2();
+                    lineasLoaded = true;
+                    if (typeof callback === 'function') callback();
+                }
+            });
+        }
+
+        getLineas(function() {
+            if (productoData) {
+                setLineaFromProducto(productoData);
+            }
+        });
+        getImpuestos(function() {
+            if (productoData) {
+                setImpuestoFromProducto(productoData);
+            }
+        });
         getObjetoImpuesto();
 
         // Cargar datos del producto
@@ -197,6 +226,10 @@
                 success: function(response) {
                     $('#loader').hide();
                     if (response.status === true && response.data) {
+                        productoData = response.data;
+                        if (lineasLoaded) {
+                            setLineaFromProducto(productoData);
+                        }
                         renderEditForm(response.data);
                     } else {
                         showMessage('danger', 'No se pudo cargar el producto.');
@@ -207,6 +240,18 @@
                     showMessage('danger', 'Error al cargar el producto.');
                 }
             });
+        }
+
+        function setLineaFromProducto(data) {
+            if (data && data.linea) {
+                $('#linea').val(data.linea).trigger('change');
+            }
+        }
+
+        function setImpuestoFromProducto(data) {
+            if (data && data.impuesto) {
+                $('#impuesto').val(data.impuesto).trigger('change');
+            }
         }
 
         // Actualizar producto
