@@ -68,6 +68,7 @@
 						</a>
 					</li>
 
+
 					<li class="nav-item menu-administrador">
 						<a href="<?php echo base_url('administrator/list-products'); ?>" class="nav-link">
 							<span class="icon"><i class='bx bx-right-arrow-alt'></i></span>
@@ -79,6 +80,13 @@
 						<a href="<?php echo base_url('administrator/create-product'); ?>" class="nav-link">
 							<span class="icon"><i class='bx bx-right-arrow-alt'></i></span>
 							<span class="menu-title">Alta Producto</span>
+						</a>
+					</li>
+
+					<li class="nav-item">
+						<a href="<?php echo base_url('administrator/list_impuestos'); ?>" class="nav-link">
+							<span class="icon"><i class='bx bx-badge-check'></i></span>
+							<span class="menu-title">Impuestos</span>
 						</a>
 					</li>
 

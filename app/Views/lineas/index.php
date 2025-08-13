@@ -154,6 +154,12 @@
                 usufecha: usufecha
             };
 
+            // Validación básica del lado del cliente
+            if (!linea) {
+                showMessage('warning', 'El campo línea es obligatorio.');
+                return;
+            }
+
             if (isUpdating) {
                 // Actualizar
                 $.ajax({
@@ -166,9 +172,16 @@
                         $('#tablaDatos').DataTable().ajax.reload();
                         isUpdating = false;
                         $('#frmLineas')[0].reset();
+                        showMessage('success', 'Línea actualizada correctamente.');
                     },
                     error: function(xhr) {
-                        alert('Error al actualizar');
+                        if (xhr.responseJSON && xhr.responseJSON.linea) {
+                            showMessage('danger', xhr.responseJSON.linea);
+                        } else if (xhr.responseJSON && xhr.responseJSON.messages) {
+                            showMessage('danger', JSON.stringify(xhr.responseJSON.messages));
+                        } else {
+                            showMessage('danger', 'Error al actualizar');
+                        }
                     }
                 });
             } else {
@@ -182,15 +195,16 @@
                         $('#tablaDatos').DataTable().ajax.reload();
                         $('#frmLineas')[0].reset();
                         $('#myModal').modal('hide');
+                        showMessage('success', 'Línea creada correctamente.');
                     },
                     error: function(xhr) {
-                        let msg = 'Error al crear';
-                        if (xhr.responseJSON && xhr.responseJSON.messages) {
-                            msg += ': ' + JSON.stringify(xhr.responseJSON.messages);
-                        } else if (xhr.responseText) {
-                            msg += ': ' + xhr.responseText;
+                        if (xhr.responseJSON && xhr.responseJSON.linea) {
+                            showMessage('danger', xhr.responseJSON.linea);
+                        } else if (xhr.responseJSON && xhr.responseJSON.messages) {
+                            showMessage('danger', JSON.stringify(xhr.responseJSON.messages));
+                        } else {
+                            showMessage('danger', 'Error al crear');
                         }
-                        alert(msg);
                     }
                 });
             }

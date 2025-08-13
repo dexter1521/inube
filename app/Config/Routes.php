@@ -13,6 +13,7 @@ $routes->get('/', 'Auth::loginView');
 $routes->group('administrator', function ($routes) {
     $routes->get('/', 'Administrator::index');
     $routes->get('list-products', 'Administrator::list_products');
+    $routes->get('list_impuestos', 'Administrator::list_impuestos');
     $routes->get('create-product', 'Administrator::create_product');
     $routes->get('edit-product/(:num)', 'Administrator::edit/$1');
     $routes->get('list-category', 'Administrator::list_category');

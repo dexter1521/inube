@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="<?php echo base_url('assets/css/style.css') ?>">
     <!-- Responsive CSS -->
     <link rel="stylesheet" href="<?php echo base_url('assets/css/responsive.css') ?>">
-    <title>Distribuciones Zúñiga v2</title>
+    <title><?php echo $_ENV['NAME_SITIO']; ?></title>
     <link rel="icon" type="image/png" href="<?php echo base_url('assets/img/favicon.png') ?>">
 </head>
 <script>
