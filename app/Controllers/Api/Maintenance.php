@@ -12,6 +12,22 @@ class Maintenance extends ResourceController
     use ResponseTrait;
 
     /**
+     * Endpoint para optimizar la base de datos con VACUUM (SQLite).
+     * SOLO debe usarse en entornos controlados desde el panel web.
+     */
+    private function __vacuum()
+    {
+        $db = \Config\Database::connect();
+        // Ejecuta VACUUM solo si es SQLite
+        if ($db->DBDriver === 'SQLite3') {
+            $db->query('VACUUM');
+            return $this->respond(['status' => 'ok', 'message' => 'VACUUM ejecutado correctamente'], 200);
+        } else {
+            return $this->respond(['status' => 'error', 'message' => 'VACUUM solo disponible para SQLite'], 400);
+        }
+    }
+
+    /**
      * Endpoint para limpiar la base de datos.
      * SOLO debe usarse en entornos controlados desde el panel web.
      */
@@ -25,11 +41,15 @@ class Maintenance extends ResourceController
             'marcas',
             'impuestos',
             'prods_download'
-            
         ];
         foreach ($tables as $table) {
             $db->table($table)->truncate();
+            // Reinicia el índice autoincrement si es SQLite
+            if ($db->DBDriver === 'SQLite3') {
+                $db->query("DELETE FROM sqlite_sequence WHERE name='" . $table . "';");
+            }
         }
-        return $this->respond(['status' => 'ok', 'message' => 'Base de datos limpiada'], 200);
+        $this->__vacuum(); // Ejecuta VACUUM después de limpiar
+        return $this->respond(['status' => 'ok', 'message' => 'Base de datos limpiada y autoincrement reiniciado'], 200);
     }
 }
