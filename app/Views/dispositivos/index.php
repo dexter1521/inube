@@ -8,15 +8,19 @@
             <!-- Listado de Dispositivos -->
             <div class="card-body d-flex flex-column">
                 <div class="w-100 h-100">
-                    <table class="table table-bordered" id="tablaDispositivos">
+                    <table class="table table-bordered table-responsive-sm text-center align-middle" id="tablaDispositivos" style="font-size: 0.97rem;">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Tipo</th>
-                                <th>Estado</th>
-                                <th>Ubicación</th>
-                                <th>Acciones</th>
+                                <th style="width: 5%">ID</th>
+                                <th style="width: 15%">Nombre</th>
+                                <th style="width: 9%">Estado</th>
+                                <th style="width: 9%">Ventas</th>
+                                <th style="width: 9%">Facturas</th>
+                                <th style="width: 9%">Pedidos</th>
+                                <th style="width: 9%">Productos</th>
+                                <th style="width: 10%">MasterProd.</th>
+                                <th style="width: 10%">Zona</th>
+                                <th style="width: 15%">Acciones</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -37,12 +41,17 @@
             $.getJSON(API_URL + 'dispositivos', function(data) {
                 var rows = '';
                 data.forEach(function(d) {
-                    rows += '<tr>' +
+                    var rowClass = d.activo == 1 ? '' : 'table-danger';
+                    rows += '<tr class="' + rowClass + '">' +
                         '<td>' + d.id + '</td>' +
                         '<td>' + d.nombre + '</td>' +
-                        '<td>' + d.tipo + '</td>' +
-                        '<td>' + (d.estado ? 'Activo' : 'Inactivo') + '</td>' +
-                        '<td>' + d.ubicacion + '</td>' +
+                        '<td>' + (d.activo == 1 ? 'Activo' : 'Inactivo') + '</td>' +
+                        '<td>' + (d.ventas == 1 ? 'Sí' : 'No') + '</td>' +
+                        '<td>' + (d.facturas == 1 ? 'Sí' : 'No') + '</td>' +
+                        '<td>' + (d.pedidos == 1 ? 'Sí' : 'No') + '</td>' +
+                        '<td>' + (d.productos == 1 ? 'Sí' : 'No') + '</td>' +
+                        '<td>' + (d.masterproductos == 1 ? '<span class="badge badge-success px-3 py-1" style="font-size:1rem;">Sí</span>' : '<span class="text-muted">No</span>') + '</td>' +
+                        '<td>' + d.zona + '</td>' +
                         '<td>' +
                         '<div class="dropdown">' +
                         '  <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu' + d.id + '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Acciones</button>' +
