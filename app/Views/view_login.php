@@ -24,18 +24,13 @@
     <span id="message"></span>
 
     <!-- Start Login Area -->
-    <div class="login-area">
-
-        <div class="d-table">
-            <div class="d-table-cell">
-                <div class="login-form">
-                    <div class="logo">
-                        <img src="<?php echo base_url('assets/img/logo.jpg') ?>" alt="image">
-                    </div>
-
-                    <h2>Bienvenido</h2>
-
-                    <form method="post" autocomplete="off">
+    <div class="login-area d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+        <div class="login-form w-100" style="max-width: 400px;">
+            <div class="logo text-center mb-3">
+                <img src="<?php echo base_url('assets/img/logo.jpg') ?>" alt="image" class="img-fluid rounded shadow" style="max-width: 220px; height: auto;">
+            </div>
+            <h2 class="text-center">Bienvenido</h2>
+            <form method="post" autocomplete="off">
                         <div class="form-group">
                             <input type="text" class="form-control" name="email" id="email" placeholder="Usuario">
                             <span class="label-title"><i class='bx bx-user'></i></span>
