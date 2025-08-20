@@ -39,12 +39,14 @@ class Productos extends BaseApiController
         $prodsDownloadModel = model('App\Models\ProdsDownloadModel');
         $dispositivos = $dispositivoModel->where('activo', 1)->findAll();
         foreach ($dispositivos as $disp) {
-            $prodsDownloadModel->insert([
-                'clave' => $clave,
-                'dispositivo' => $disp['dispositivo'],
-                'aplicado' => 0,
-                'fecha_registro' => date('Y-m-d H:i:s')
-            ]);
+            if (empty($disp['masterproductos']) || intval($disp['masterproductos']) !== 1) {
+                $prodsDownloadModel->insert([
+                    'clave' => $clave,
+                    'dispositivo' => $disp['dispositivo'],
+                    'aplicado' => 0,
+                    'fecha_registro' => date('Y-m-d H:i:s')
+                ]);
+            }
         }
 
         return $this->successResponse('Producto creado correctamente.', $data, 201);
@@ -53,7 +55,7 @@ class Productos extends BaseApiController
     public function show($identifier = null)
     {
         if (!$identifier) {
-            return $this->failValidationErrors('Identificador requerido (ID o clave)');
+            return $this->failValidationErrors('Identificador requerido (id o clave del producto)');
         }
 
         // Buscar por ID o por clave
@@ -71,7 +73,7 @@ class Productos extends BaseApiController
     public function update($identifier = null)
     {
         if (!$identifier) {
-            return $this->failValidationErrors('Identificador requerido (ID o clave)');
+            return $this->failValidationErrors('Identificador requerido (id o clave del producto)');
         }
 
         $json = file_get_contents('php://input');
@@ -117,23 +119,25 @@ class Productos extends BaseApiController
         $prodsDownloadModel = model('App\Models\ProdsDownloadModel');
         $dispositivos = $dispositivoModel->where('activo', 1)->findAll();
         foreach ($dispositivos as $disp) {
-            // Si ya existe el registro, lo pone como pendiente
-            $row = $prodsDownloadModel->where([
-                'clave' => $clave,
-                'dispositivo' => $disp['nombre']
-            ])->first();
-            if ($row) {
-                $prodsDownloadModel->update($row['id'], [
-                    'aplicado' => 0,
-                    'fecha_aplicado' => null
-                ]);
-            } else {
-                $prodsDownloadModel->insert([
+            if (empty($disp['masterproductos']) || intval($disp['masterproductos']) !== 1) {
+                // Si ya existe el registro, lo pone como pendiente
+                $row = $prodsDownloadModel->where([
                     'clave' => $clave,
-                    'dispositivo' => $disp['nombre'],
-                    'aplicado' => 0,
-                    'fecha_registro' => date('Y-m-d H:i:s')
-                ]);
+                    'dispositivo' => $disp['nombre']
+                ])->first();
+                if ($row) {
+                    $prodsDownloadModel->update($row['id'], [
+                        'aplicado' => 0,
+                        'fecha_aplicado' => null
+                    ]);
+                } else {
+                    $prodsDownloadModel->insert([
+                        'clave' => $clave,
+                        'dispositivo' => $disp['nombre'],
+                        'aplicado' => 0,
+                        'fecha_registro' => date('Y-m-d H:i:s')
+                    ]);
+                }
             }
         }
 
