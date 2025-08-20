@@ -6,6 +6,7 @@ use CodeIgniter\Events\Events;
 use CodeIgniter\Exceptions\FrameworkException;
 use CodeIgniter\HotReloader\HotReloader;
 
+
 /*
  * --------------------------------------------------------------------
  * Application Events
@@ -23,6 +24,22 @@ use CodeIgniter\HotReloader\HotReloader;
  *      Events::on('create', [$myInstance, 'myMethod']);
  */
 
+// Aplica PRAGMA SQLite solo una vez por proceso
+Events::on('post_controller_constructor', static function () {
+    $db = \Config\Database::connect();
+    if ($db->DBDriver === 'SQLite3') {
+        static $done = false;
+        if ($done) return;
+        $done = true;
+        $db->simpleQuery('PRAGMA journal_mode=WAL;'); #Lecturas concurrentes sin bloquearse
+        $db->simpleQuery('PRAGMA synchronous=NORMAL;'); #Cambia a FULL si priorizas durabilidad
+        $db->simpleQuery('PRAGMA foreign_keys=ON;');
+        $db->simpleQuery('PRAGMA busy_timeout=5000;'); #evita "database is locked"
+        $db->simpleQuery('PRAGMA temp_store=MEMORY;');
+        $db->simpleQuery('PRAGMA cache_size=-20000;'); #Limita el tamaño de la caché -- ~20 MB (valor negativo = KB)
+    }
+});
+
 Events::on('pre_system', static function () {
     if (ENVIRONMENT !== 'testing') {
         if (ini_get('zlib.output_compression')) {
@@ -33,7 +50,7 @@ Events::on('pre_system', static function () {
             ob_end_flush();
         }
 
-        ob_start(static fn ($buffer) => $buffer);
+        ob_start(static fn($buffer) => $buffer);
     }
 
     /*

@@ -18,12 +18,26 @@ class Maintenance extends ResourceController
     private function __vacuum()
     {
         $db = \Config\Database::connect();
-        // Ejecuta VACUUM solo si es SQLite
         if ($db->DBDriver === 'SQLite3') {
             $db->query('VACUUM');
             return $this->respond(['status' => 'ok', 'message' => 'VACUUM ejecutado correctamente'], 200);
         } else {
             return $this->respond(['status' => 'error', 'message' => 'VACUUM solo disponible para SQLite'], 400);
+        }
+    }
+
+    /**
+     * Endpoint público para ejecutar ANALYZE (SQLite).
+     * SOLO debe usarse en entornos controlados desde el panel web.
+     */
+    public function analyze()
+    {
+        $db = \Config\Database::connect();
+        if ($db->DBDriver === 'SQLite3') {
+            $db->query('ANALYZE');
+            return $this->respond(['status' => 'ok', 'message' => 'ANALYZE ejecutado correctamente'], 200);
+        } else {
+            return $this->respond(['status' => 'error', 'message' => 'ANALYZE solo disponible para SQLite'], 400);
         }
     }
 
