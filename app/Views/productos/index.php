@@ -89,14 +89,17 @@
                 "url": API_URL + "productos",
                 "type": "GET",
                 "dataSrc": function(json) {
+                    console.log('Datos recibidos del backend:', json);
                     return json.map(function(item) {
+                        //console.log('Producto:', item.clave, 'bloqueado:', item.bloqueado);
                         return {
                             id: item.ID,
                             nombre: item.clave,
                             descripcion: item.descripcion,
                             precio: item.precio,
                             activo: item.bloqueado ? 'No' : 'Sí',
-                            categoria: item.linea
+                            categoria: item.linea,
+                            bloqueado: item.bloqueado
                         };
                     });
                 }
@@ -146,7 +149,12 @@
             "language": {
                 "url": "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
             },
-            "responsive": true
+            "responsive": true,
+            "rowCallback": function(row, data) {
+                if (data.bloqueado == 1) {
+                    $(row).css('background-color', '#ffcccc');
+                }
+            }
         });
         // Inicializar tooltips de Bootstrap
         setTimeout(function() {

@@ -305,13 +305,17 @@
 
     function renderEditForm(data) {
         // Mapear todos los datos del backend a los campos del formulario
+        const checkboxFields = ['bloqueado', 'bajocosto', 'speso', 'granel', 'invent', 'paraventa'];
         for (const key in data) {
             if (data.hasOwnProperty(key)) {
                 var $field = $('#frmprods-edit [name="' + key + '"]');
                 if ($field.length) {
                     if ($field.is(':checkbox')) {
-                        // Asegura que el valor sea booleano (1/0, true/false)
-                        $field.prop('checked', data[key] == 1 || data[key] === true || data[key] === '1');
+                        if (checkboxFields.includes(key)) {
+                            $field.prop('checked', data[key] == 1 || data[key] === true || data[key] === '1');
+                        } else {
+                            $field.prop('checked', false);
+                        }
                     } else {
                         $field.val(data[key]);
                     }

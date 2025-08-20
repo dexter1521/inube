@@ -7,6 +7,7 @@ use CodeIgniter\Model;
 class ProductosModel extends Model
 {
     protected $beforeUpdate = ['beforeUpdate'];
+    protected $beforeInsert = ['beforeInsert'];
     protected $forceCheckboxFields = [
         'paraventa',
         'invent',
@@ -21,22 +22,33 @@ class ProductosModel extends Model
         // Forzar que los campos tipo checkbox se actualicen aunque sean 0
         if (isset($data['data'])) {
             foreach ($this->forceCheckboxFields as $field) {
-                // Si el campo existe y su valor es '1', guardar como 1
                 if (array_key_exists($field, $data['data'])) {
-                    $data['data'][$field] = (intval($data['data'][$field]) ? 1 : 0);
-                } else {
-                    // Si no existe, guardar como 0
-                    $data['data'][$field] = 0;
+                    // Normaliza a 0/1 SOLO si el campo viene en el payload
+                    $data['data'][$field] = intval($data['data'][$field]) ? 1 : 0;
                 }
             }
         }
-        // ...
-        // Log adicional para ver el array final de datos antes del update
-        if (isset($data['data'])) {
-            log_message('debug', 'Array final enviado a update: ' . json_encode($data['data']));
-        }
+
+        log_message('debug', 'Array final enviado a update: ' . json_encode($data['data'] ?? []));
         return $data;
     }
+
+    protected function beforeInsert(array $data)
+    {
+        if (isset($data['data'])) {
+            foreach ($this->forceCheckboxFields as $field) {
+                if (!array_key_exists($field, $data['data'])) {
+                    // Si no viene, usa 0 como default de inserción
+                    $data['data'][$field] = 0;
+                } else {
+                    $data['data'][$field] = intval($data['data'][$field]) ? 1 : 0;
+                }
+            }
+        }
+
+        return $data;
+    }
+
     protected $table      = 'productos';
     protected $primaryKey = 'ID';
 
