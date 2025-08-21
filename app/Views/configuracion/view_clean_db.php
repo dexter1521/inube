@@ -7,40 +7,40 @@
 </div>
 
 <script>
-$(document).ready(function() {
-    $('#btnLimpiar').click(function() {
-        Swal.fire({
-            title: '¿Estás seguro?',
-            text: 'Esta acción eliminará todos los datos y no se puede deshacer.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Sí, limpiar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.showLoading();
-                $.ajax({
-                    url: '/api/maintenance/clean',
-                    type: 'POST',
-                    success: function(response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: '¡Listo!',
-                            text: response.message
-                        });
-                    },
-                    error: function(xhr) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Error al limpiar la base de datos.'
-                        });
-                    }
-                });
-            }
+    $(document).ready(function() {
+        $('#btnLimpiar').click(function() {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: 'Esta acción eliminará todos los datos y no se puede deshacer.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, limpiar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.showLoading();
+                    $.ajax({
+                        url: '/api/maintenance/clean',
+                        type: 'POST',
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Listo!',
+                                text: response.message
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Error al limpiar la base de datos.'
+                            });
+                        }
+                    });
+                }
+            });
         });
     });
-});
 </script>

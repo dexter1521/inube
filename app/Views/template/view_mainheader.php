@@ -10,9 +10,14 @@
             validarSesion();
         });
 
-        // Manejador global para errores AJAX: redirige al login si la sesión expira
+        // Handler global para errores AJAX de autenticación, redirige al login si la sesión expira
         $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
-            if (jqxhr.status === 401) {window.location.href = BASE_URL;}
+            if (jqxhr.status === 401 || (jqxhr.responseJSON && jqxhr.responseJSON.message && jqxhr.responseJSON.message.toLowerCase().includes('expired token'))) {
+                localStorage.removeItem('token');
+                document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+                alert('Tu sesión ha expirado. Por favor inicia sesión nuevamente.');
+                window.location.href = BASE_URL + 'Auth';
+            }
         });
 
 

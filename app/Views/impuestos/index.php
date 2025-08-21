@@ -30,19 +30,6 @@
     </div>
 </div>
 
-<style>
-    @media (max-width: 576px) {
-        .card-header h3 {
-            font-size: 1.1rem;
-        }
-
-        .btn {
-            font-size: 0.95rem;
-        }
-    }
-</style>
-
-
 <!-- Modal homologado para crear/editar impuesto -->
 <div class="modal fade" id="modalImpuesto" data-backdrop="static" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -86,6 +73,18 @@
         </div>
     </div>
 </div>
+
+<style>
+    @media (max-width: 576px) {
+        .card-header h3 {
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            font-size: 0.95rem;
+        }
+    }
+</style>
 
 <script>
     $(function() {
@@ -254,4 +253,3 @@
         });
     });
 </script>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" />

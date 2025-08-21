@@ -54,7 +54,7 @@
                     <div class="form-group">
                         <label for="correo">Correo electronico</label>
                         <input type="email" class="form-control mb-2" id="correo" name="correo" onkeyup="isValidEmail(this);">
-<div id="messages" style="display:none;"></div>
+                        <div id="messages" style="display:none;"></div>
                     </div>
 
                     <div class="form-group">
@@ -158,7 +158,7 @@
 
         // Confirmar cierre del modal si hay cambios sin guardar
         let formOriginal = null;
-        $('#myModal').on('show.bs.modal', function () {
+        $('#myModal').on('show.bs.modal', function() {
             formOriginal = $('#frmUsuario').serialize();
         });
         $(document).on('click', '.btn-cerrar, .close', function(e) {

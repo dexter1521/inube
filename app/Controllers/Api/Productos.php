@@ -119,7 +119,7 @@ class Productos extends BaseApiController
         $prodsDownloadModel = model('App\Models\ProdsDownloadModel');
         $dispositivos = $dispositivoModel->where('activo', 1)->findAll();
         foreach ($dispositivos as $disp) {
-            if (empty($disp['masterproductos']) || intval($disp['masterproductos']) !== 1) {
+            //if (empty($disp['masterproductos']) || intval($disp['masterproductos']) !== 1) {
                 // Si ya existe el registro, lo pone como pendiente
                 $row = $prodsDownloadModel->where([
                     'clave' => $clave,
@@ -138,7 +138,7 @@ class Productos extends BaseApiController
                         'fecha_registro' => date('Y-m-d H:i:s')
                     ]);
                 }
-            }
+            //}
         }
 
         $productoActualizado = $this->model->find($producto['ID']);

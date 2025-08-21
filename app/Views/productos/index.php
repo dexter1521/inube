@@ -89,7 +89,7 @@
                 "url": API_URL + "productos",
                 "type": "GET",
                 "dataSrc": function(json) {
-                    console.log('Datos recibidos del backend:', json);
+                    //console.log('Datos recibidos del backend:', json);
                     return json.map(function(item) {
                         //console.log('Producto:', item.clave, 'bloqueado:', item.bloqueado);
                         return {

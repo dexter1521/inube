@@ -41,26 +41,30 @@
 
         <h4>Primeros 20 registros</h4>
         <div style="overflow-x:auto;">
-        <table class="table table-striped table-sm">
-            <thead>
-                <tr>
-                    <?php if (!empty($rows)): foreach(array_keys($rows[0]) as $col): ?>
-                        <th><?php echo $col; ?></th>
-                    <?php endforeach; endif; ?>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($rows)): foreach($rows as $row): ?>
+            <table class="table table-striped table-sm">
+                <thead>
                     <tr>
-                        <?php foreach($row as $val): ?>
-                            <td><?php echo htmlspecialchars($val); ?></td>
-                        <?php endforeach; ?>
+                        <?php if (!empty($rows)): foreach (array_keys($rows[0]) as $col): ?>
+                                <th><?php echo $col; ?></th>
+                        <?php endforeach;
+                        endif; ?>
                     </tr>
-                <?php endforeach; else: ?>
-                    <tr><td colspan="100">Sin registros</td></tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php if (!empty($rows)): foreach ($rows as $row): ?>
+                            <tr>
+                                <?php foreach ($row as $val): ?>
+                                    <td><?php echo htmlspecialchars($val); ?></td>
+                                <?php endforeach; ?>
+                            </tr>
+                        <?php endforeach;
+                    else: ?>
+                        <tr>
+                            <td colspan="100">Sin registros</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
         </div>
     <?php endif; ?>
 
@@ -81,26 +85,30 @@
     <?php if ($queryResult !== null): ?>
         <h5 class="mt-3">Resultado de la consulta</h5>
         <div style="overflow-x:auto;">
-        <table class="table table-bordered table-sm">
-            <thead>
-                <tr>
-                    <?php if (!empty($queryResult)): foreach(array_keys($queryResult[0]) as $col): ?>
-                        <th><?php echo $col; ?></th>
-                    <?php endforeach; endif; ?>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($queryResult)): foreach($queryResult as $row): ?>
+            <table class="table table-bordered table-sm">
+                <thead>
                     <tr>
-                        <?php foreach($row as $val): ?>
-                            <td><?php echo htmlspecialchars($val); ?></td>
-                        <?php endforeach; ?>
+                        <?php if (!empty($queryResult)): foreach (array_keys($queryResult[0]) as $col): ?>
+                                <th><?php echo $col; ?></th>
+                        <?php endforeach;
+                        endif; ?>
                     </tr>
-                <?php endforeach; else: ?>
-                    <tr><td colspan="100">Sin resultados</td></tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php if (!empty($queryResult)): foreach ($queryResult as $row): ?>
+                            <tr>
+                                <?php foreach ($row as $val): ?>
+                                    <td><?php echo htmlspecialchars($val); ?></td>
+                                <?php endforeach; ?>
+                            </tr>
+                        <?php endforeach;
+                    else: ?>
+                        <tr>
+                            <td colspan="100">Sin resultados</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
         </div>
     <?php endif; ?>
 </div>

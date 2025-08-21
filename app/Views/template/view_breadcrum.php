@@ -1,4 +1,3 @@
-
 <!-- Breadcrumb Area -->
 
 <div class="breadcrumb-area">
@@ -8,8 +7,8 @@
         <li class="breadcrumb-item"><a href="#"><i class='bx bx-home-alt'></i></a></li>
         <?php foreach ($breadcrumb as $label => $url) : ?>
             <?php
-                $isAbsolute = (strpos($url, 'http://') === 0 || strpos($url, 'https://') === 0);
-                $finalUrl = $isAbsolute ? $url : site_url($url);
+            $isAbsolute = (strpos($url, 'http://') === 0 || strpos($url, 'https://') === 0);
+            $finalUrl = $isAbsolute ? $url : site_url($url);
             ?>
             <li class="breadcrumb-item active"><a href="<?php echo $finalUrl; ?>"><?php echo $label; ?></a></li>
         <?php endforeach; ?>
